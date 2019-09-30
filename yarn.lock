@@ -5681,11 +5681,6 @@ react-spring@^9.0.0-beta.34:
     "@react-spring/web" "^9.0.0-beta.34"
     "@react-spring/zdog" "^9.0.0-beta.33"
 
-react-springs@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/react-springs/-/react-springs-1.1.0.tgz#e091cd75d8b70d4bf164ee4f81007448b5e2a751"
-  integrity sha1-4JHNddi3DUvxZO5PgQB0SLXip1E=
-
 react-three-fiber@^3.0.0-beta.16:
   version "3.0.0-beta.16"
   resolved "https://registry.yarnpkg.com/react-three-fiber/-/react-three-fiber-3.0.0-beta.16.tgz#908932ef6fe17c52add25c4b27c7e64fc2efc0d1"

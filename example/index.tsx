@@ -10,6 +10,7 @@ const Box = () => {
   const rotationX = useControl('Rotate X', { type: 'number', spring: true });
   const rotationY = useControl('Rotate Y', {
     type: 'number',
+    scrub: true,
     spring: {
       friction: 2,
       mass: 2,
@@ -18,12 +19,12 @@ const Box = () => {
   const color = useControl('Material color', {
     type: 'color',
   });
-  const position = useControl('Position', {
-    type: 'xypad',
-    value: { x: 0, y: 0 },
-    distance: 25,
-    // infinite: true, - later
-  });
+  // const position = useControl('Position', {
+  //   type: 'xypad',
+  //   value: { x: 0, y: 0 },
+  //   distance: 25,
+  //   // infinite: true, - later
+  // });
   const bool = useControl('Allowed', {
     type: 'boolean',
   });
@@ -33,13 +34,16 @@ const Box = () => {
   });
   const btn = useControl('Clicky', {
     type: 'button',
+    onClick() {
+      alert('Hello world');
+    }
   });
 
   const ref = React.useRef<THREE.Mesh>();
   return (
-    <a.mesh ref={ref} position={[position.x, position.y, 0]} rotation-x={rotationX} rotation-y={rotationY}>
+    <a.mesh ref={ref} rotation-x={rotationX} rotation-y={rotationY}>
       <boxGeometry attach="geometry" args={[1, 1, 1]} />
-      <meshStandardMaterial attach="material" color="orange" />
+      <a.meshStandardMaterial attach="material" color={color} />
     </a.mesh>
   )
 }

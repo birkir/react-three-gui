@@ -16,3 +16,9 @@ export const defaultValue = (config: ControlConfig) => {
   }
   return 0;
 }
+
+export const clamp = (num: number, clamp: number, higher: number) =>
+  higher ? Math.min(Math.max(num, clamp), higher) : Math.min(num, clamp)
+
+export const map = (value: number, x1: number, y1: number, x2: number, y2: number) =>
+  (value - x1) * (y2 - x2) / (y1 - x1) + x2;

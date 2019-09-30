@@ -13,10 +13,16 @@ export type ControlItem = {
 
 type ControlConfigNumber = {
   type: 'number';
+  /* Minimum value */
   min?: number;
+  /* Maximum value */
   max?: number;
+  /* Initial value */
   value?: number;
-  fract?: number;
+  /* Slider distance */
+  distance?: number;
+  /* Scrub value in both directions */
+  scrub?: boolean;
 };
 
 type ControlConfigString = {

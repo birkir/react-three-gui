@@ -24,10 +24,10 @@ const Button = styled.button`
 
 export function ButtonControl({ control }: any) {
   return (
-    <div>
+    <div style={{ paddingTop: 8, paddingBottom: 8 }}>
       <Button onClick={() => {
-        if (control.onClick) {
-          control.onClick();
+        if (control.config.onClick) {
+          control.config.onClick();
         }
       }}>{control.name}</Button>
     </div>

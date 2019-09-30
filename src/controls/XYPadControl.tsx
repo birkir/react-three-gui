@@ -31,7 +31,7 @@ export function XYPadControl({ control }: any) {
     if (ref.current && !width) {
       set(ref.current.getBoundingClientRect());
     }
-  })
+  }, [ref])
 
   const x = lines.x.to(n => clamp(n + width / 2, 0, width));
   const y = lines.y.to(n => clamp(n + height / 2, 0, height));
