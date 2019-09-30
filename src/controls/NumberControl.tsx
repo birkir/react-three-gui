@@ -27,7 +27,7 @@ const InputRange = styled.input`
     border-radius: 50%;
     background: #ffffff;
     cursor: pointer;
-    box-shadow: 0 2px 8px 0 rgba(0,0,0,.22);
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.22);
     -webkit-appearance: none;
     margin-top: -4px;
   }
@@ -40,53 +40,63 @@ const InputRange = styled.input`
 const PRECISION = 300;
 const CENTER = PRECISION / 2;
 
-const map = (value: number, x1: number, y1: number, x2: number, y2: number) => (value - x1) * (y2 - x2) / (y1 - x1) + x2;
-const clamp = (num: number, clamp: number, higher: number) => higher ? Math.min(Math.max(num, clamp), higher) : Math.min(num, clamp)
+const map = (value: number, x1: number, y1: number, x2: number, y2: number) =>
+  ((value - x1) * (y2 - x2)) / (y1 - x1) + x2;
+const clamp = (num: number, clamp: number, higher: number) =>
+  higher ? Math.min(Math.max(num, clamp), higher) : Math.min(num, clamp);
 
-export function NumberControl({ control }: any) {
+export function NumberControl({ control, value }: any) {
   const ref = useRef<HTMLInputElement | null>(null);
   const stage = useRef(null);
   const { config } = control;
-  const [value, setValue] = useState(config.scrub ? CENTER : control.value);
+  const [val, setVal] = useState(config.scrub ? CENTER : value);
   const { min = 0, max = Math.PI, distance = Math.PI } = config;
 
-  const handleChange = () => {
+  const handleChange = useCallback(() => {
     if (config.scrub) {
-      setValue(CENTER);
+      setVal(CENTER);
       stage.current = null;
     }
-  }
+  });
 
   useEffect(() => {
     if (ref.current) {
       ref.current.addEventListener('change', handleChange);
     }
-  }, [ref]);
+  }, [handleChange, ref]);
 
   useEffect(() => {
     return () => {
       if (ref.current) {
         ref.current.removeEventListener('change', handleChange);
       }
-    }
-  }, []);
+    };
+  }, [handleChange]);
 
   return (
-    <BaseControl label={control.name} value={control.value.toFixed(2)}>
+    <BaseControl label={control.name} value={value.toFixed(2)}>
       <InputRange
         ref={ref}
         type="range"
-        value={value}
+        value={val}
         min={0}
         max={PRECISION}
         onChange={e => {
           const num = Number(e.currentTarget.value);
-          setValue(num);
+          setVal(num);
           if (stage.current === null) {
-            stage.current = control.value;
+            stage.current = value;
           }
-          const value = (stage as any).current + map(num - (config.scrub ? CENTER : 0), 0, PRECISION, 0, (config.scrub ? distance * 2 : distance));
-          control.set(clamp(value, min, max));
+          const cvalue =
+            (stage as any).current +
+            map(
+              num - (config.scrub ? CENTER : 0),
+              0,
+              PRECISION,
+              0,
+              config.scrub ? distance * 2 : distance
+            );
+          control.set(clamp(cvalue, min, max));
         }}
       />
     </BaseControl>

@@ -19,12 +19,11 @@ const Box = () => {
   const color = useControl('Material color', {
     type: 'color',
   });
-  // const position = useControl('Position', {
-  //   type: 'xypad',
-  //   value: { x: 0, y: 0 },
-  //   distance: 25,
-  //   // infinite: true, - later
-  // });
+  const position = useControl('Position', {
+    type: 'xypad',
+    value: { x: 0, y: 0 },
+    distance: Math.PI,
+  });
   const bool = useControl('Allowed', {
     type: 'boolean',
   });
@@ -39,10 +38,25 @@ const Box = () => {
     }
   });
 
+  const MyControl = ({ control, value }) => (
+    <label>Test:
+      <input
+        type="number"
+        onChange={e => control.set(e.currentTarget.value)}
+        value={value}
+      />
+    </label>
+  );
+
+  const size = useControl('Test', {
+    value: 1,
+    component: MyControl
+  });
+
   const ref = React.useRef<THREE.Mesh>();
   return (
-    <a.mesh ref={ref} rotation-x={rotationX} rotation-y={rotationY}>
-      <boxGeometry attach="geometry" args={[1, 1, 1]} />
+    <a.mesh ref={ref} position={[position.x, position.y, 0]} rotation-x={rotationX} rotation-y={rotationY}>
+      <boxGeometry attach="geometry" args={[size, size, size]} />
       <a.meshStandardMaterial attach="material" color={color} />
     </a.mesh>
   )

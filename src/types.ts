@@ -9,7 +9,8 @@ export type ControlItem = {
   set: any;
   value: any;
   config: ControlConfig;
-}
+  addEventListener: any;
+};
 
 type ControlConfigNumber = {
   type: 'number';
@@ -53,9 +54,14 @@ type ControlConfigColor = {
 
 type ControlConfigXYPad = {
   type: 'xypad';
-  value?: { x: number, y: number };
+  value?: { x: number; y: number };
   distance?: number;
-}
+};
+
+type ControlConfigCustom = {
+  type: 'custom';
+  component?: any;
+};
 
 type ControlConfigBase = {
   value?: any;
@@ -66,6 +72,7 @@ type ControlConfigBase = {
 
 export type ControlConfig = ControlConfigBase &
   (
+    | ControlConfigCustom
     | ControlConfigNumber
     | ControlConfigBoolean
     | ControlConfigString
@@ -73,4 +80,3 @@ export type ControlConfig = ControlConfigBase &
     | ControlConfigColor
     | ControlConfigSelect
     | ControlConfigXYPad);
-

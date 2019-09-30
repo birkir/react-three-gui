@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { ChromePicker } from 'react-color';
 import { BaseControl } from './BaseControl';
@@ -22,19 +22,33 @@ const Picker = styled.div<{ hidden: boolean }>`
   z-index: 100;
 `;
 
-export function ColorControl({ control }: any) {
+export function ColorControl({ control, value }: any) {
   const [open, setOpen] = useState(false);
+  const pickerRef = useRef<HTMLDivElement>();
+  const handleClick = (e: any) => {
+    if (pickerRef.current && !pickerRef.current.contains(e.target)) {
+      setOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.body.addEventListener('click', handleClick);
+    return () => {
+      document.body.removeEventListener('click', handleClick);
+    };
+  }, []);
+
   return (
-    <BaseControl label={control.name}>
+    <BaseControl label={control.name} flexLabel>
       <ColorPicker>
         <ColorBox
-          style={{ backgroundColor: control.value }}
-          onClick={() => setOpen(x => !x)}
+          style={{ backgroundColor: value }}
+          onClick={() => setOpen(lastValue => !lastValue)}
         />
-        <Picker hidden={open !== true}>
+        <Picker hidden={open !== true} ref={pickerRef as any}>
           <ChromePicker
-            color={control.value}
-            onChangeComplete={color => control.set(color.hex)}
+            color={value}
+            onChange={color => control.set(color.hex)}
             disableAlpha
           />
         </Picker>

@@ -18,7 +18,7 @@ const Checkbox = styled.input`
   margin-right: -15px;
   & + ${FakeCheckbox}:after {
     position: absolute;
-    content: "";
+    content: '';
     display: inline-block;
     height: 4px;
     width: 8px;
@@ -41,14 +41,14 @@ const Checkbox = styled.input`
   }
 `;
 
-export function BooleanControl({ control }: any) {
+export function BooleanControl({ control, value }: any) {
   const htmlFor = `Control${control.id.current}`;
   return (
-    <BaseControl label={control.name} htmlFor={htmlFor}>
+    <BaseControl flexLabel label={control.name} htmlFor={htmlFor}>
       <Checkbox
         id={htmlFor}
         type="checkbox"
-        checked={control.value}
+        checked={value}
         onChange={e => control.set(e.currentTarget.checked)}
       />
       <FakeCheckbox htmlFor={htmlFor} />

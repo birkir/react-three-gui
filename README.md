@@ -36,6 +36,19 @@ useControl('Adjust value', {
 });
 ```
 
+Also you can pass your own control component:
+```tsx
+const MyControl = ({ control, value }) => (
+  <input
+    type="number"
+    onChange={e => control.set(e.currentTarget.value)}
+    value={value}
+  />
+);
+
+useControl('Test', { value: 2, component: MyControl });
+```
+
 ### Supported controls
 - number
 - xypad
@@ -46,9 +59,9 @@ useControl('Adjust value', {
 
 ### Future plans
 
-- [ ] Support custom control components
+- [x] Support custom control components
 - [ ] Support passing refs and directly manipulate THREE objects
-- [ ] Use Context instead of global Map<>
 - [ ] Groups
-- [ ] Draggable/Collapsable widget
+- [x] Draggable Widget
+- [ ] Collapsable widget
 - [ ] Multi platform?

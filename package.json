@@ -1,12 +1,13 @@
 {
   "name": "react-three-gui",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "dist/index.js",
   "module": "dist/react-three-gui.esm.js",
   "typings": "dist/index.d.ts",
   "files": [
     "dist"
   ],
+  "author": "Birkir Gudjonsson <birkir.gudjonsson@gmail.com>",
   "license": "MIT",
   "scripts": {
     "start": "tsdx watch",

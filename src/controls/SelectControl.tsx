@@ -7,7 +7,7 @@ const Select = styled.select`
 
   font-family: sans-serif;
   font-size: 14px;
-  color: rgba(0,0,0,0.4);
+  color: rgba(0, 0, 0, 0.4);
 
   display: block;
   position: relative;
@@ -25,13 +25,10 @@ const Select = styled.select`
   padding: 0 4px;
 `;
 
-export function SelectControl({ control }: any) {
+export function SelectControl({ control, value }: any) {
   return (
     <BaseControl label={control.name}>
-      <Select
-        value={control.value}
-        onChange={e => control.set(e.currentTarget.value)}
-      >
+      <Select value={value} onChange={e => control.set(e.currentTarget.value)}>
         {control.config.items.map((item: string, i: number) => (
           <option key={i}>{item}</option>
         ))}

@@ -6,7 +6,7 @@ const Button = styled.button`
 
   font-family: sans-serif;
   font-size: 14px;
-  color: rgba(0,0,0,0.4);
+  color: rgba(0, 0, 0, 0.4);
 
   display: block;
   position: relative;
@@ -25,11 +25,15 @@ const Button = styled.button`
 export function ButtonControl({ control }: any) {
   return (
     <div style={{ paddingTop: 8, paddingBottom: 8 }}>
-      <Button onClick={() => {
-        if (control.config.onClick) {
-          control.config.onClick();
-        }
-      }}>{control.name}</Button>
+      <Button
+        onClick={() => {
+          if (control.config.onClick) {
+            control.config.onClick();
+          }
+        }}
+      >
+        {control.name}
+      </Button>
     </div>
   );
 }
