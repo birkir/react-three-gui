@@ -72,7 +72,7 @@ function ControlItem({ control }: any) {
 
 export const Controls = React.memo(() => {
   const [{ pos }, setPos] = useSpring(() => ({ pos: [0, 0] }));
-  const bind = useDrag(({ movement, memo = pos.getValue() }) => {
+  const bind = useDrag(({ movement, memo = pos.get() }) => {
     setPos({
       pos: [
         clamp(movement[0] + memo[0], -window.innerWidth + WIDTH + 32, 1),

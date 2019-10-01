@@ -5,6 +5,41 @@ import { a } from 'react-spring/three';
 import { Canvas } from 'react-three-fiber';
 import * as THREE from 'three';
 import { Controls, useControl } from '../src';
+import fontFile from './resources/unknown';
+
+function Text({ children, size = 1, letterSpacing = 0.01, color = '#000000' }) {
+  const [font] = React.useState(() => new THREE.FontLoader().parse(fontFile))
+  const [shapes, [x, y]] = React.useMemo(() => {
+    let x = 0,
+      y = 0
+    let letters = [...children]
+    let mat = new THREE.MeshBasicMaterial({ color, opacity: 1, transparent: true })
+    return [
+      letters.map(letter => {
+        const geom = new THREE.ShapeGeometry(font.generateShapes(letter, size, 1))
+        geom.computeBoundingBox()
+        const mesh = new THREE.Mesh(geom, mat)
+        mesh.position.x = x
+        x += geom.boundingBox.max.x + letterSpacing
+        y = Math.max(y, geom.boundingBox.max.y)
+        return mesh
+      }),
+      [x, y],
+    ]
+  }, [children])
+
+  React.useEffect(() => {
+    console.log('children', children);
+  }, [children.length]);
+
+  return (
+    <group position={[-x / 2, -y / 2, 0]}>
+      {shapes.map((shape, index) => (
+        <primitive key={index} object={shape} />
+      ))}
+    </group>
+  )
+}
 
 const Box = () => {
   const rotationX = useControl('Rotate X', { type: 'number', spring: true });
@@ -20,7 +55,7 @@ const Box = () => {
     },
   });
   const color = useControl('Material color', {
-    type: 'color',
+    type: 'color'
   });
   const position = useControl('Position', {
     type: 'xypad',
@@ -36,6 +71,7 @@ const Box = () => {
   });
   const str = useControl('Text', {
     type: 'string',
+    value: 'example',
   });
   const btn = useControl('Clicky', {
     type: 'button',
@@ -43,6 +79,8 @@ const Box = () => {
       alert('Hello world');
     }
   });
+
+  console.log({ str });
 
 
   const MyControl = ({ control, value }) => (
@@ -63,17 +101,20 @@ const Box = () => {
 
   const ref = React.useRef<THREE.Mesh>();
   return (
-    <a.mesh
-      ref={ref}
-      // position={[position.x, position.y, 0]}
-      rotation-x={rotationX}
-      rotation-y={rotationY}
-    >
-      <boxGeometry attach="geometry" args={[size, size, size]} />
-      <a.meshStandardMaterial attach="material"
-      // color={color}
-      />
-    </a.mesh>
+    <>
+      <a.mesh
+        ref={ref}
+        position={[position.x, position.y, 0]}
+        rotation-x={rotationX}
+        rotation-y={rotationY}
+      >
+        <boxGeometry attach="geometry" args={[size, size, size]} />
+        <a.meshStandardMaterial attach="material"
+          color={color}
+        />
+      </a.mesh>
+      <Text>{str}</Text>
+    </>
   )
 }
 
