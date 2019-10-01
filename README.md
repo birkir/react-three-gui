@@ -26,6 +26,21 @@ export const App = () => {
 };
 ```
 
+Use the spring option to return a react-spring value:
+```tsx
+useControl('My ctrl', {
+  type: 'number',
+  spring: true,
+})
+
+// or pass a react-spring configuration value
+
+useControl('My ctrl', {
+  type: 'number',
+  spring: { mass: 5, tension: 280, friction: 50 },
+})
+```
+
 Also possible to pass in your own state:
 ```tsx
 const [value, set] = useState(0);
@@ -46,16 +61,22 @@ const MyControl = ({ control, value }) => (
   />
 );
 
-useControl('Test', { value: 2, component: MyControl });
+useControl('Test', {
+  type: 'custom',
+  value: 2,
+  component: MyControl,
+});
 ```
 
 ### Supported controls
+
 - number
 - xypad
 - boolean
 - button
 - color
 - select
+- string
 
 ### Future plans
 

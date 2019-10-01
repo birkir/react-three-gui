@@ -1,6 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
-import styled from 'styled-components';
+import React, { useEffect, useRef, useState } from 'react';
 import { ChromePicker } from 'react-color';
+import styled from 'styled-components';
 import { BaseControl } from './BaseControl';
 
 const ColorPicker = styled.div`

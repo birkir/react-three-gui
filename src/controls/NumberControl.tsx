@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { BaseControl } from './BaseControl';
 
@@ -57,21 +57,19 @@ export function NumberControl({ control, value }: any) {
       setVal(CENTER);
       stage.current = null;
     }
-  });
+  }, [config.scrub]);
 
   useEffect(() => {
-    if (ref.current) {
-      ref.current.addEventListener('change', handleChange);
+    const el = ref.current;
+    if (el) {
+      el.addEventListener('change', handleChange);
     }
-  }, [handleChange, ref]);
-
-  useEffect(() => {
     return () => {
-      if (ref.current) {
-        ref.current.removeEventListener('change', handleChange);
+      if (el) {
+        el.removeEventListener('change', handleChange);
       }
     };
-  }, [handleChange]);
+  }, [handleChange, ref]);
 
   return (
     <BaseControl label={control.name} value={value.toFixed(2)}>

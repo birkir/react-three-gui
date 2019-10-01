@@ -1,4 +1,4 @@
-import { RefObject, Dispatch, SetStateAction } from 'react';
+import { Dispatch, RefObject, SetStateAction } from 'react';
 import { SpringConfig } from 'react-spring/three';
 
 export type ControlId = RefObject<number>;
@@ -28,11 +28,13 @@ type ControlConfigNumber = {
 
 type ControlConfigString = {
   type: 'string';
+  /* Initial value */
   value?: string;
 };
 
 type ControlConfigButton = {
   type: 'button';
+  /* Fired on button click */
   onClick?(): void;
 };
 
@@ -43,30 +45,39 @@ type ControlConfigBoolean = {
 
 type ControlConfigSelect = {
   type: 'select';
+  /* List of items to select from */
   items: string[];
+  /* Initial value */
   value?: string;
 };
 
 type ControlConfigColor = {
   type: 'color';
+  /* Initial value as HEX code */
   value?: string;
 };
 
 type ControlConfigXYPad = {
   type: 'xypad';
+  /* Initial value as { x, y } object */
   value?: { x: number; y: number };
+  /* Pad drag distance */
   distance?: number;
 };
 
 type ControlConfigCustom = {
   type: 'custom';
+  /* Custom React component */
   component?: any;
 };
 
 type ControlConfigBase = {
   value?: any;
+  /* Return useSpring instead of useState */
   spring?: boolean | SpringConfig;
+  /* Group this control */
   group?: string;
+  /* Use your own state */
   state?: [any, Dispatch<SetStateAction<any>>];
 };
 

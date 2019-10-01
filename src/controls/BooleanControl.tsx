@@ -1,6 +1,6 @@
 import React from 'react';
-import { BaseControl } from './BaseControl';
 import styled from 'styled-components';
+import { BaseControl } from './BaseControl';
 
 const FakeCheckbox = styled.label`
   height: 16px;

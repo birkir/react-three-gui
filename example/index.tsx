@@ -1,10 +1,10 @@
-import 'react-app-polyfill/ie11';
 import * as React from 'react';
+import 'react-app-polyfill/ie11';
 import * as ReactDOM from 'react-dom';
-import { Canvas } from 'react-three-fiber';
 import { a } from 'react-spring/three';
-import { Controls, useControl } from '../src';
+import { Canvas } from 'react-three-fiber';
 import * as THREE from 'three';
+import { Controls, useControl } from '../src';
 
 const Box = () => {
   const rotationX = useControl('Rotate X', { type: 'number', spring: true });
@@ -31,12 +31,16 @@ const Box = () => {
     type: 'select',
     items: ['foo', 'bar', 'baz']
   });
+  const str = useControl('Text', {
+    type: 'string',
+  });
   const btn = useControl('Clicky', {
     type: 'button',
     onClick() {
       alert('Hello world');
     }
   });
+
 
   const MyControl = ({ control, value }) => (
     <label>Test:
@@ -48,15 +52,16 @@ const Box = () => {
     </label>
   );
 
-  const size = useControl('Test', {
-    value: 1,
-    component: MyControl
-  });
+  // const size = useControl('Test', {
+  //   type: 'custom',
+  //   value: 1,
+  //   component: MyControl
+  // });
 
   const ref = React.useRef<THREE.Mesh>();
   return (
     <a.mesh ref={ref} position={[position.x, position.y, 0]} rotation-x={rotationX} rotation-y={rotationY}>
-      <boxGeometry attach="geometry" args={[size, size, size]} />
+      <boxGeometry attach="geometry" args={[1, 1, 1]} />
       <a.meshStandardMaterial attach="material" color={color} />
     </a.mesh>
   )

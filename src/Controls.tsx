@@ -8,6 +8,7 @@ import { SelectControl } from './controls/SelectControl';
 import { ColorControl } from './controls/ColorControl';
 import { XYPadControl } from './controls/XYPadControl';
 import { ButtonControl } from './controls/ButtonControl';
+import { StringControl } from './controls/StringControl';
 import { controls, controlsEmitter } from './index';
 import { defaultValue, clamp } from './utils';
 
@@ -52,11 +53,12 @@ const ControlType = {
   boolean: BooleanControl,
   select: SelectControl,
   color: ColorControl,
+  string: StringControl,
   button: ButtonControl,
   xypad: XYPadControl,
 };
 
-function Bah({ control }: any) {
+function ControlItem({ control }: any) {
   const Control =
     control.config.component || (ControlType as any)[control.config.type];
   const [value, setValue] = useState(defaultValue(control.config));
@@ -99,7 +101,7 @@ export function Controls() {
       <Header {...bind()} />
       <Items>
         {Array.from(controls).map(([id, control]) => (
-          <Bah key={id.current} control={control} />
+          <ControlItem key={id.current} control={control} />
         ))}
       </Items>
     </Float>
