@@ -1,8 +1,8 @@
-import { useRef, useState, useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useSpring } from 'react-spring/three';
+import { controls, controlsEmitter } from '../index';
 import { ControlConfig, ControlItem } from '../types';
 import { defaultConfig, defaultValue } from '../utils';
-import { controls, controlsEmitter } from '../index';
-import { useSpring } from 'react-spring/three';
 
 let uid = 0;
 
@@ -40,12 +40,12 @@ export const useControl = (
     return () => {
       controls.delete(id);
     };
-  }, [config, name, value]);
+  }, []);
 
   useEffect(() => {
     config.spring && void setSpring({ value });
     listener.current && void listener.current(value);
-  }, [config.spring, setSpring, value]);
+  }, [value]);
 
   if (config.spring) {
     return spring.value;

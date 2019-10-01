@@ -33,10 +33,10 @@
     "@types/react-color": "^3.0.1",
     "@types/react-dom": "^16.9.1",
     "@types/styled-components": "^4.1.19",
+    "eslint-config-react-app": "5.0.1",
     "husky": "^3.0.5",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
-    "react-spring": "^9.0.0-beta.34",
     "react-three-fiber": "^3.0.0-beta.16",
     "three": "^0.109.0",
     "tsdx": "^0.9.3",
@@ -44,8 +44,8 @@
     "typescript": "^3.6.3"
   },
   "dependencies": {
-    "eslint-config-react-app": "5.0.1",
     "react-color": "^2.17.3",
+    "react-spring": "^9.0.0-beta.34",
     "react-use-gesture": "^6.0.1",
     "styled-components": "^4.4.0"
   }

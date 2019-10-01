@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import { useSpring, animated, interpolate } from 'react-spring';
+import React, { useEffect, useState } from 'react';
+import { animated, interpolate, useSpring } from 'react-spring';
 import { useDrag } from 'react-use-gesture';
-import { NumberControl } from './controls/NumberControl';
+import styled from 'styled-components';
 import { BooleanControl } from './controls/BooleanControl';
-import { SelectControl } from './controls/SelectControl';
-import { ColorControl } from './controls/ColorControl';
-import { XYPadControl } from './controls/XYPadControl';
 import { ButtonControl } from './controls/ButtonControl';
+import { ColorControl } from './controls/ColorControl';
+import { NumberControl } from './controls/NumberControl';
+import { SelectControl } from './controls/SelectControl';
 import { StringControl } from './controls/StringControl';
+import { XYPadControl } from './controls/XYPadControl';
 import { controls, controlsEmitter } from './index';
-import { defaultValue, clamp } from './utils';
+import { clamp, defaultValue } from './utils';
 
 const WIDTH = 300;
 
@@ -63,13 +63,14 @@ function ControlItem({ control }: any) {
     control.config.component || (ControlType as any)[control.config.type];
   const [value, setValue] = useState(defaultValue(control.config));
   useEffect(() => {
-    control.addEventListener(setValue);
-  }, [control]);
+    if (!Control.skipEvents)
+      control.addEventListener(setValue);
+  }, []);
   if (!Control) return null;
   return <Control key={control.id.current} control={control} value={value} />;
 }
 
-export function Controls() {
+export const Controls = React.memo(() => {
   const [{ pos }, setPos] = useSpring(() => ({ pos: [0, 0] }));
   const bind = useDrag(({ movement, memo = pos.getValue() }) => {
     setPos({
@@ -106,4 +107,4 @@ export function Controls() {
       </Items>
     </Float>
   );
-}
+});

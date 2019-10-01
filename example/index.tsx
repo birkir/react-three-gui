@@ -11,6 +11,9 @@ const Box = () => {
   const rotationY = useControl('Rotate Y', {
     type: 'number',
     scrub: true,
+    min: 0,
+    max: 20,
+    distance: 10,
     spring: {
       friction: 2,
       mass: 2,
@@ -52,17 +55,24 @@ const Box = () => {
     </label>
   );
 
-  // const size = useControl('Test', {
-  //   type: 'custom',
-  //   value: 1,
-  //   component: MyControl
-  // });
+  const size = useControl('Test', {
+    type: 'custom',
+    value: 1,
+    component: MyControl
+  });
 
   const ref = React.useRef<THREE.Mesh>();
   return (
-    <a.mesh ref={ref} position={[position.x, position.y, 0]} rotation-x={rotationX} rotation-y={rotationY}>
-      <boxGeometry attach="geometry" args={[1, 1, 1]} />
-      <a.meshStandardMaterial attach="material" color={color} />
+    <a.mesh
+      ref={ref}
+      // position={[position.x, position.y, 0]}
+      rotation-x={rotationX}
+      rotation-y={rotationY}
+    >
+      <boxGeometry attach="geometry" args={[size, size, size]} />
+      <a.meshStandardMaterial attach="material"
+      // color={color}
+      />
     </a.mesh>
   )
 }

@@ -1,23 +1,28 @@
 import React from 'react';
+import { animated, interpolate, useSpring } from 'react-spring';
 import { useDrag } from 'react-use-gesture';
-import { a, useSpring, to } from 'react-spring';
+import { clamp, map } from '../utils';
 import { BaseControl } from './BaseControl';
-import { map, clamp } from '../utils';
 
-export function XYPadControl({ control, value }: any) {
+const THRESHOLD = 0.00001;
+
+export const XYPadControl = React.memo(({ control, value }: any) => {
   const ref = React.useRef<SVGElement>();
   const stage = React.useRef(null);
   const { distance = 1, scrub = false } = control.config;
   const [{ width, height }] = React.useState({ width: 270, height: 152 });
   const [cursor, setCursor] = useSpring(() => ({
-    x: 0,
-    y: 0,
-    config: { tension: 230, friction: 20 },
+    from: {
+      x: value.x,
+      y: value.y,
+    },
     onFrame({ x, y }: any) {
       if (!scrub) {
+        const vx = clamp(map(x, 0, width / 2, 0, distance), -distance, distance) || 0;
+        const vy = clamp(map(y, 0, height / 2, 0, distance), -distance, distance) || 0
         control.set(() => ({
-          x: clamp(map(x, 0, width / 2, 0, distance), -distance, distance),
-          y: clamp(map(y, 0, height / 2, 0, distance), -distance, distance),
+          x: vx < THRESHOLD && vx > -THRESHOLD ? 0 : vx,
+          y: vy < THRESHOLD && vy > -THRESHOLD ? 0 : vy,
         }));
       }
     },
@@ -42,8 +47,8 @@ export function XYPadControl({ control, value }: any) {
     }
   });
 
-  const x = cursor.x.to(n => clamp(n + width / 2, 0, width));
-  const y = cursor.y.to(n => clamp(n + height / 2, 0, height));
+  const x = cursor.x.interpolate(n => clamp(n + width / 2, 0, width));
+  const y = cursor.y.interpolate(n => clamp(n + height / 2, 0, height));
 
   return (
     <BaseControl
@@ -51,30 +56,32 @@ export function XYPadControl({ control, value }: any) {
       label={control.name}
       value={`x: ${value.x.toFixed(1)}, y: ${value.y.toFixed(1)}`}
     >
-      <a.svg
+      <animated.svg
         ref={ref as any}
         style={{
           userSelect: 'none',
           borderRadius: 8,
           border: '1px solid #f0f0f0',
         }}
-        width="100%"
-        height="100%"
+        width={width}
+        height={height}
         xmlns="http://www.w3.org/2000/svg"
         {...bind()}
       >
         <rect fill="rgb(250, 250, 250)" width="100%" height="100%" />
-        <a.line x1={x} x2={x} y1={0} y2="100%" stroke="#ccc" />
-        <a.line x1={0} x2="100%" y1={y} y2={y} stroke="#ccc" />
-        <a.g
+        <animated.line x1={x} x2={x} y1={0} y2="100%" stroke="#ccc" />
+        <animated.line x1={0} x2="100%" y1={y} y2={y} stroke="#ccc" />
+        <animated.g
           style={{
-            transform: to([x, y], (x, y) => `translate(${x}px, ${y}px)`),
+            transform: interpolate([x, y], (x, y) => `translate(${x}px, ${y}px)`),
           }}
         >
           <circle r={8} fill="#ccc" />
           <circle r={4} fill="#aaa" />
-        </a.g>
-      </a.svg>
+        </animated.g>
+      </animated.svg>
     </BaseControl>
   );
-}
+});
+
+// (XYPadControl as any).skipEvents = true;
