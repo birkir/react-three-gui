@@ -28,10 +28,6 @@ function Text({ children, size = 1, letterSpacing = 0.01, color = '#000000' }) {
     ]
   }, [children])
 
-  React.useEffect(() => {
-    console.log('children', children);
-  }, [children.length]);
-
   return (
     <group position={[-x / 2, -y / 2, 0]}>
       {shapes.map((shape, index) => (
@@ -41,10 +37,21 @@ function Text({ children, size = 1, letterSpacing = 0.01, color = '#000000' }) {
   )
 }
 
+const Next = () => {
+  const rotationX = useControl('Mega', { group: 'Test', type: 'number', spring: true });
+  return (
+    <a.mesh position={[1.5, 0, 0]} rotation-x={rotationX}>
+      <boxGeometry attach="geometry" args={[1, 1, 1]} />
+      <meshStandardMaterial attach="material" />
+    </a.mesh>
+  )
+};
+
 const Box = () => {
-  const rotationX = useControl('Rotate X', { type: 'number', spring: true });
+  const rotationX = useControl('Rotate X', { group: 'Basic', type: 'number', spring: true });
   const rotationY = useControl('Rotate Y', {
     type: 'number',
+    group: 'Basic',
     scrub: true,
     min: 0,
     max: 20,
@@ -55,33 +62,36 @@ const Box = () => {
     },
   });
   const color = useControl('Material color', {
-    type: 'color'
+    type: 'color',
+    group: 'Basic',
   });
   const position = useControl('Position', {
+    group: 'More',
     type: 'xypad',
     value: { x: 0, y: 0 },
     distance: Math.PI,
   });
   const bool = useControl('Allowed', {
+    group: 'More',
     type: 'boolean',
   });
   const dropdown = useControl('Pick one', {
+    group: 'More',
     type: 'select',
     items: ['foo', 'bar', 'baz']
   });
   const str = useControl('Text', {
+    group: 'More',
     type: 'string',
     value: 'example',
   });
   const btn = useControl('Clicky', {
+    group: 'More',
     type: 'button',
     onClick() {
       alert('Hello world');
     }
   });
-
-  console.log({ str });
-
 
   const MyControl = ({ control, value }) => (
     <label>Test:
@@ -94,6 +104,7 @@ const Box = () => {
   );
 
   const size = useControl('Test', {
+    group: 'More',
     type: 'custom',
     value: 1,
     component: MyControl
@@ -114,6 +125,7 @@ const Box = () => {
         />
       </a.mesh>
       <Text>{str}</Text>
+      {dropdown === 'bar' && <Next />}
     </>
   )
 }

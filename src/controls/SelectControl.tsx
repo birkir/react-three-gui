@@ -20,7 +20,7 @@ const Select = styled.select`
   margin-left: 8px;
 
   border: 0;
-  background-color: #fafafa;
+  background-color: rgba(0, 0, 0, 0.025);
   border-radius: 4px;
   padding: 0 4px;
 `;

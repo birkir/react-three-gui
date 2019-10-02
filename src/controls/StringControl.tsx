@@ -20,17 +20,12 @@ const Input = styled.input`
   margin-left: 8px;
 
   border: 0;
-  background-color: #fafafa;
+  background-color: rgba(0, 0, 0, 0.025);
   border-radius: 4px;
   padding: 0 4px;
 `;
 
 export const StringControl = React.memo(({ control, value }: any) => {
-  // const [val, setVal] = React.useState(control.value);
-  // React.useEffect(() => {
-  //   setVal(value);
-  //   control.set(value);
-  // }, [value]);
   return (
     <BaseControl label={control.name}>
       <Input value={value} onChange={e => control.set(e.target.value)} />

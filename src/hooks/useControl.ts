@@ -39,6 +39,7 @@ export const useControl = (
     controlsEmitter.update();
     return () => {
       controls.delete(id);
+      controlsEmitter.update();
     };
   }, []);
 

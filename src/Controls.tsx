@@ -2,15 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { animated, interpolate, useSpring } from 'react-spring';
 import { useDrag } from 'react-use-gesture';
 import styled from 'styled-components';
-import { BooleanControl } from './controls/BooleanControl';
-import { ButtonControl } from './controls/ButtonControl';
-import { ColorControl } from './controls/ColorControl';
-import { NumberControl } from './controls/NumberControl';
-import { SelectControl } from './controls/SelectControl';
-import { StringControl } from './controls/StringControl';
-import { XYPadControl } from './controls/XYPadControl';
+import { ControlGroup } from './components/ControlGroup';
 import { controls, controlsEmitter } from './index';
-import { clamp, defaultValue } from './utils';
+import { clamp } from './utils';
 
 const WIDTH = 300;
 
@@ -45,34 +39,23 @@ const Header = styled(animated.div)`
 `;
 
 const Items = styled.div`
-  padding: 16px;
+  padding-bottom: 8px;
 `;
 
-const ControlType = {
-  number: NumberControl,
-  boolean: BooleanControl,
-  select: SelectControl,
-  color: ColorControl,
-  string: StringControl,
-  button: ButtonControl,
-  xypad: XYPadControl,
-};
+const DEFAULT_GROUP = 'DEFAULT_GROUP';
 
-function ControlItem({ control }: any) {
-  const Control =
-    control.config.component || (ControlType as any)[control.config.type];
-  const [value, setValue] = useState(defaultValue(control.config));
-  useEffect(() => {
-    if (!Control.skipEvents)
-      control.addEventListener(setValue);
-  }, []);
-  if (!Control) return null;
-  return <Control key={control.id.current} control={control} value={value} />;
+const groupByGroup = (items: any): any => {
+  return Array.from(items).reduce((acc: any, item: any) => {
+    const groupName = item[1].config.group || DEFAULT_GROUP;
+    acc[groupName] = acc[groupName] || [];
+    acc[groupName].push(item);
+    return acc;
+  }, {} as { [key: string]: any });
 }
 
 export const Controls = React.memo(() => {
   const [{ pos }, setPos] = useSpring(() => ({ pos: [0, 0] }));
-  const bind = useDrag(({ movement, memo = pos.get() }) => {
+  const bind = useDrag(({ movement, memo = ((pos as any).getValue ? (pos as any).getValue() : (pos as any).get()) }) => {
     setPos({
       pos: [
         clamp(movement[0] + memo[0], -window.innerWidth + WIDTH + 32, 1),
@@ -101,8 +84,8 @@ export const Controls = React.memo(() => {
     >
       <Header {...bind()} />
       <Items>
-        {Array.from(controls).map(([id, control]) => (
-          <ControlItem key={id.current} control={control} />
+        {Object.entries(groupByGroup(controls)).map(([groupName, items]: any) => (
+          <ControlGroup key={groupName} title={groupName} controls={items} />
         ))}
       </Items>
     </Float>

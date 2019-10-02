@@ -6,6 +6,8 @@ A graphical user interface for changing variable states in React.
 
 https://codesandbox.io/s/react-three-fiber-gui-62pvp
 
+![Example](https://media.giphy.com/media/hrvUiMXTTu1aEprRhj/giphy.gif)
+
 ## Usage
 
 Basic example
@@ -71,18 +73,33 @@ useControl('Test', {
 ### Supported controls
 
 - number
+  - min/max
+  - `scrub` for scrubbing option
+  - `distance` for configuring scroll distance
+  - Returns `number`
 - xypad
+  - min/max
+  - `scrub` for scrubbing option
+  - `distance` for configuring scroll distance
+  - Returns `{ x: number, y: number }` object
 - boolean
+  - Returns `boolean`
 - button
+  - `onPress` option is the callback function
+  - Returns `void`
 - color
+  - Returns `string` (as hex: #ffffff)
 - select
+  - Has `items: string[]` option to define list of options
+  - Returns `string`
 - string
+  - Returns `string`
 
 ### Future plans
 
 - [x] Support custom control components
 - [ ] Support passing refs and directly manipulate THREE objects
-- [ ] Groups
+- [x] Groups
 - [x] Draggable Widget
 - [ ] Collapsable widget
 - [ ] Multi platform?

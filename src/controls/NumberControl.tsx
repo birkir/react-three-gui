@@ -16,7 +16,7 @@ const InputRange = styled.input`
     width: 100%;
     height: 12px;
     cursor: pointer;
-    background: #f7f9fa;
+    background: rgba(0, 0, 0, 0.045);
     border-radius: 10px;
   }
 

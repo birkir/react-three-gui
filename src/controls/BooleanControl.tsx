@@ -5,7 +5,7 @@ import { BaseControl } from './BaseControl';
 const FakeCheckbox = styled.label`
   height: 16px;
   width: 16px;
-  border: 2px solid #eee;
+  border: 2px solid rgba(0, 0, 0, 0.065);
   border-radius: 4px;
   position: relative;
   margin-top: -1px;
@@ -36,8 +36,8 @@ const Checkbox = styled.input`
     transform: translate(0px, 0px) rotate(-45deg);
   }
   &:checked + ${FakeCheckbox} {
-    background: #eee;
-    border-color: #ddd;
+    background: rgba(0, 0, 0, 0.045);
+    border-color: rgba(0, 0, 0, 0.085);
   }
 `;
 

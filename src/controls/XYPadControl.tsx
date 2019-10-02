@@ -47,8 +47,8 @@ export const XYPadControl = React.memo(({ control, value }: any) => {
     }
   });
 
-  const x = cursor.x.interpolate(n => clamp(n + width / 2, 0, width));
-  const y = cursor.y.interpolate(n => clamp(n + height / 2, 0, height));
+  const x = cursor.x.interpolate((n: number) => clamp(n + width / 2, 0, width));
+  const y = cursor.y.interpolate((n: number) => clamp(n + height / 2, 0, height));
 
   return (
     <BaseControl
