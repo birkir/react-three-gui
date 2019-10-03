@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
+import { clamp, map } from '../utils';
 import { BaseControl } from './BaseControl';
 
 const InputRange = styled.input`
@@ -40,17 +41,20 @@ const InputRange = styled.input`
 const PRECISION = 300;
 const CENTER = PRECISION / 2;
 
-const map = (value: number, x1: number, y1: number, x2: number, y2: number) =>
-  ((value - x1) * (y2 - x2)) / (y1 - x1) + x2;
-const clamp = (num: number, clamp: number, higher: number) =>
-  higher ? Math.min(Math.max(num, clamp), higher) : Math.min(num, clamp);
-
 export function NumberControl({ control, value }: any) {
   const ref = useRef<HTMLInputElement | null>(null);
   const stage = useRef(null);
   const { config } = control;
-  const [val, setVal] = useState(config.scrub ? CENTER : value);
-  const { min = 0, max = Math.PI, distance = Math.PI } = config;
+  const {
+    min = config.scrub ? -Infinity : 0,
+    max = config.scrub ? Infinity : Math.PI
+  } = config;
+
+  let distance = config.distance;
+  if (!distance) {
+    distance = config.scrub ? 2 : max - min;
+  }
+  const [val, setVal] = useState(config.scrub ? CENTER : map(value, min, max, 0, PRECISION));
 
   const handleChange = useCallback(() => {
     if (config.scrub) {
@@ -86,13 +90,13 @@ export function NumberControl({ control, value }: any) {
             stage.current = value;
           }
           const cvalue =
-            (stage as any).current +
+            (config.scrub ? (stage as any).current : 0) +
             map(
               num - (config.scrub ? CENTER : 0),
               0,
               PRECISION,
-              0,
-              config.scrub ? distance * 2 : distance
+              config.scrub ? 0 : min,
+              config.scrub ? distance * 2 : max
             );
           control.set(clamp(cvalue, min, max));
         }}

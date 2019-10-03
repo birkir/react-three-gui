@@ -1,6 +1,7 @@
 import * as React from 'react';
 import 'react-app-polyfill/ie11';
 import * as ReactDOM from 'react-dom';
+import { animated } from 'react-spring';
 import { a } from 'react-spring/three';
 import { Canvas } from 'react-three-fiber';
 import * as THREE from 'three';
@@ -130,6 +131,16 @@ const Box = () => {
   )
 }
 
+const Hello = () => {
+  useControl('1', { type: 'number' });
+  useControl('2', { type: 'number', max: 10 });
+  useControl('3', { type: 'number', min: -5, max: 5, value: -2.5 });
+  useControl('4', { type: 'number', min: 0, max: 200, value: 100 });
+  useControl('5', { type: 'number', scrub: true });
+  useControl('5', { type: 'number', scrub: true, distance: 1000 });
+  return (<animated.div style={{ width: 100, height: 100, background: 'red' }} />)
+};
+
 const App = () => {
   return (
     <div>
@@ -139,6 +150,7 @@ const App = () => {
         <Box />
       </Canvas>
       <Controls />
+      <Hello />
     </div>
   );
 };
