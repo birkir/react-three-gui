@@ -46,6 +46,7 @@ export const useControl = (
   useEffect(() => {
     config.spring && void setSpring({ value });
     listener.current && void listener.current(value);
+    config.onChange && void config.onChange(value);
   }, [value]);
 
   if (config.spring) {

@@ -70,27 +70,53 @@ useControl('Test', {
 });
 ```
 
-### Supported controls
+## API
+```tsx
+import { useControl, Controls } from 'react-three-gui';
+
+// All the possible options
+useControl(name: string, {
+  // General
+  type: 'number' | 'xypad' | 'boolean' | 'button' | 'color' | 'select' | 'string' | 'custom';
+  value: any; // Initial value
+  spring: boolean | SpringConfig; // Use spring
+  group: string; // Group name
+  state: [any, Dispatch<SetStateAction<any>>]; // Use your own state
+  onChange(value: any): void; // onChange callback
+
+  // number | xypad
+  min: number; // Minimum value (default: 0)
+  max: number; // Maximum value (default: 1)
+  distance: number; // The end-to-end slider distance (default: 1)
+  scrub: boolean; // When slider is released it will reset to the center but keep its value
+
+  // select
+  items: string[];
+
+  // button
+  onPress(): void;
+
+  // custom
+  component?: React.Component;
+});
+
+// Currently does not have any props
+<Controls />
+```
+
+## Supported controls
 
 - number
-  - min/max
-  - `scrub` for scrubbing option
-  - `distance` for configuring scroll distance
   - Returns `number`
 - xypad
-  - min/max
-  - `scrub` for scrubbing option
-  - `distance` for configuring scroll distance
   - Returns `{ x: number, y: number }` object
 - boolean
   - Returns `boolean`
 - button
-  - `onPress` option is the callback function
   - Returns `void`
 - color
   - Returns `string` (as hex: #ffffff)
 - select
-  - Has `items: string[]` option to define list of options
   - Returns `string`
 - string
   - Returns `string`

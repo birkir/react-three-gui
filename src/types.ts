@@ -79,6 +79,8 @@ type ControlConfigBase = {
   group?: string;
   /* Use your own state */
   state?: [any, Dispatch<SetStateAction<any>>];
+  /* onChange callback */
+  onChange?(value: any): void;
 };
 
 export type ControlConfig = ControlConfigBase &
