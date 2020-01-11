@@ -94,7 +94,7 @@ useControl(name: string, {
   items: string[];
 
   // button
-  onPress(): void;
+  onClick(): void;
 
   // custom
   component?: React.Component;
