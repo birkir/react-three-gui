@@ -9,8 +9,9 @@
   },
   "dependencies": {
     "react-app-polyfill": "^1.0.0",
-    "react-three-fiber": "^2.4.3",
-    "three": "^0.108.0"
+    "react-three-fiber": "^4.2.20",
+    "three": "^0.119.1",
+    "trim-right": "^1.0.1"
   },
   "alias": {
     "react": "../node_modules/react",
@@ -21,7 +22,7 @@
   "devDependencies": {
     "@types/react": "^16.8.15",
     "@types/react-dom": "^16.8.4",
-    "parcel": "^1.12.3",
-    "typescript": "^3.4.5"
+    "parcel": "^1.12.4",
+    "typescript": "^3.9.7"
   }
 }

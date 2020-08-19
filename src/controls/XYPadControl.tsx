@@ -16,17 +16,16 @@ export const XYPadControl = React.memo(({ control, value }: any) => {
       x: value.x,
       y: value.y,
     },
-    onFrame({ x, y }: any) {
-      if (!scrub) {
-        const vx = clamp(map(x, 0, width / 2, 0, distance), -distance, distance) || 0;
-        const vy = clamp(map(y, 0, height / 2, 0, distance), -distance, distance) || 0
-        control.set(() => ({
-          x: vx < THRESHOLD && vx > -THRESHOLD ? 0 : vx,
-          y: vy < THRESHOLD && vy > -THRESHOLD ? 0 : vy,
-        }));
-      }
+
+    onChange(value: any, b: any) {
+      const v =
+        clamp(map(value, 0, width / 2, 0, distance), -distance, distance) || 0;
+      control.set((prev: any) => ({
+        ...prev,
+        [b.key]: v < THRESHOLD && v > -THRESHOLD ? 0 : v,
+      }));
     },
-  }));
+  })) as any;
 
   const bind = useDrag(({ down, movement }) => {
     if (down && !stage.current) {
@@ -34,7 +33,9 @@ export const XYPadControl = React.memo(({ control, value }: any) => {
     } else if (!down) {
       stage.current = null;
     }
+
     setCursor({ x: down ? movement[0] : 0, y: down ? movement[1] : 0 });
+
     if (scrub && down) {
       control.set(() => ({
         x:
@@ -48,7 +49,9 @@ export const XYPadControl = React.memo(({ control, value }: any) => {
   });
 
   const x = cursor.x.interpolate((n: number) => clamp(n + width / 2, 0, width));
-  const y = cursor.y.interpolate((n: number) => clamp(n + height / 2, 0, height));
+  const y = cursor.y.interpolate((n: number) =>
+    clamp(n + height / 2, 0, height)
+  );
 
   return (
     <BaseControl
@@ -73,7 +76,10 @@ export const XYPadControl = React.memo(({ control, value }: any) => {
         <animated.line x1={0} x2="100%" y1={y} y2={y} stroke="#ccc" />
         <animated.g
           style={{
-            transform: interpolate([x, y], (x, y) => `translate(${x}px, ${y}px)`),
+            transform: interpolate(
+              [x, y],
+              (x, y) => `translate(${x}px, ${y}px)`
+            ),
           }}
         >
           <circle r={8} fill="#ccc" />

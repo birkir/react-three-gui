@@ -1,6 +1,6 @@
 {
   "name": "react-three-gui",
-  "version": "0.1.5",
+  "version": "0.2.0",
   "main": "dist/index.js",
   "module": "dist/react-three-gui.esm.js",
   "typings": "dist/index.d.ts",
@@ -33,15 +33,15 @@
     "@types/react-color": "^3.0.1",
     "@types/react-dom": "^16.9.1",
     "@types/styled-components": "^4.1.19",
-    "eslint-config-react-app": "5.0.1",
+    "eslint-config-react-app": "^5.2.1",
     "husky": "^3.0.5",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-three-fiber": "^3.0.0-beta.16",
     "three": "^0.109.0",
-    "tsdx": "^0.9.3",
-    "tslib": "^1.10.0",
-    "typescript": "^3.6.3"
+    "tsdx": "^0.13.2",
+    "tslib": "^2.0.1",
+    "typescript": "^3.9.7"
   },
   "dependencies": {
     "react-color": "^2.17.3",

@@ -47,14 +47,16 @@ export function NumberControl({ control, value }: any) {
   const { config } = control;
   const {
     min = config.scrub ? -Infinity : 0,
-    max = config.scrub ? Infinity : Math.PI
+    max = config.scrub ? Infinity : Math.PI,
   } = config;
 
   let distance = config.distance;
   if (!distance) {
     distance = config.scrub ? 2 : max - min;
   }
-  const [val, setVal] = useState(config.scrub ? CENTER : map(value, min, max, 0, PRECISION));
+  const [val, setVal] = useState(
+    config.scrub ? CENTER : map(value, min, max, 0, PRECISION)
+  );
 
   const handleChange = useCallback(() => {
     if (config.scrub) {

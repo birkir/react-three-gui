@@ -1,15 +1,6 @@
 {
   "editor.formatOnSave": true,
-  "[typescript]": {
-    "editor.codeActionsOnSave": {
-      "source.organizeImports": true,
-      "source.fixAll": true
-    }
-  },
-  "[typescriptreact]": {
-    "editor.codeActionsOnSave": {
-      "source.organizeImports": true,
-      "source.fixAll": true
-    }
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
   }
 }

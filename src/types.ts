@@ -92,4 +92,5 @@ export type ControlConfig = ControlConfigBase &
     | ControlConfigButton
     | ControlConfigColor
     | ControlConfigSelect
-    | ControlConfigXYPad);
+    | ControlConfigXYPad
+  );

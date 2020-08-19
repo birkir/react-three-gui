@@ -14,7 +14,7 @@ const Heading = styled.h2<{ open: boolean }>`
 
   &:before,
   &:after {
-    content: "";
+    content: '';
     position: absolute;
     top: 8px;
     right: 16px;
@@ -24,18 +24,18 @@ const Heading = styled.h2<{ open: boolean }>`
     /* transition: transform 0.25s ease-out; */
   }
   &:before {
-    transform: rotate(${props => props.open ? 0 : 90}deg);
+    transform: rotate(${props => (props.open ? 0 : 90)}deg);
   }
 
-  &:after{
-    transform: rotate(${props => props.open ? 0 : 180}deg);
+  &:after {
+    transform: rotate(${props => (props.open ? 0 : 180)}deg);
   }
 `;
 
-const Container = styled.div<{ open: boolean, bg: boolean }>`
-  background: ${props => props.bg ? '#f9f9f9' : '#fff'};
+const Container = styled.div<{ open: boolean; bg: boolean }>`
+  background: ${props => (props.bg ? '#f9f9f9' : '#fff')};
   padding: 16px;
-  display: ${props => props.open ? 'block' : 'none'};
+  display: ${props => (props.open ? 'block' : 'none')};
   margin-bottom: 8px;
 `;
 
@@ -44,12 +44,16 @@ export const ControlGroup = ({ title, controls, config }: any) => {
   const isDefault = title !== 'DEFAULT_GROUP';
   return (
     <div>
-      {isDefault && <Heading open={open} onClick={() => setOpen(o => !o)}>{title}</Heading>}
+      {isDefault && (
+        <Heading open={open} onClick={() => setOpen(o => !o)}>
+          {title}
+        </Heading>
+      )}
       <Container open={open} bg={isDefault}>
         {Array.from(controls).map(([id, control]: any) => (
           <ControlItem key={id.current} control={control} />
         ))}
       </Container>
     </div>
-  )
-}
+  );
+};

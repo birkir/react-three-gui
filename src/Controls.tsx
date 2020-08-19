@@ -51,23 +51,30 @@ const groupByGroup = (items: any): any => {
     acc[groupName].push(item);
     return acc;
   }, {} as { [key: string]: any });
-}
+};
 
 interface ControlsProps {
-  defaultClosedGroups?: string[]
+  defaultClosedGroups?: string[];
 }
 
 export const Controls = React.memo((props?: ControlsProps) => {
   const [{ pos }, setPos] = useSpring(() => ({ pos: [0, 0] }));
-  const bind = useDrag(({ movement, memo = ((pos as any).getValue ? (pos as any).getValue() : (pos as any).get()) }) => {
-    setPos({
-      pos: [
-        clamp(movement[0] + memo[0], -window.innerWidth + WIDTH + 32, 1),
-        clamp(movement[1] + memo[1], 0, window.innerHeight - 350),
-      ],
-    });
-    return memo;
-  });
+  const bind = useDrag(
+    ({
+      movement,
+      memo = (pos as any).getValue
+        ? (pos as any).getValue()
+        : (pos as any).get(),
+    }) => {
+      setPos({
+        pos: [
+          clamp(movement[0] + memo[0], -window.innerWidth + WIDTH + 32, 1),
+          clamp(movement[1] + memo[1], 0, window.innerHeight - 350),
+        ],
+      });
+      return memo;
+    }
+  );
   const [, set] = useState<number>(0);
 
   useEffect(() => {
@@ -79,9 +86,9 @@ export const Controls = React.memo((props?: ControlsProps) => {
 
   const getGroupConfig = (groupName: string): any => {
     return {
-      defaultClosed: props?.defaultClosedGroups?.includes(groupName) ?? false
-    }
-  }
+      defaultClosed: props?.defaultClosedGroups?.includes(groupName) ?? false,
+    };
+  };
 
   return (
     <Float
@@ -94,9 +101,16 @@ export const Controls = React.memo((props?: ControlsProps) => {
     >
       <Header {...bind()} />
       <Items>
-        {Object.entries(groupByGroup(controls)).map(([groupName, items]: any) => (
-          <ControlGroup key={groupName} title={groupName} controls={items} config={getGroupConfig(groupName)} />
-        ))}
+        {Object.entries(groupByGroup(controls)).map(
+          ([groupName, items]: any) => (
+            <ControlGroup
+              key={groupName}
+              title={groupName}
+              controls={items}
+              config={getGroupConfig(groupName)}
+            />
+          )
+        )}
       </Items>
     </Float>
   );
