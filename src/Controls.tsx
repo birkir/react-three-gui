@@ -53,7 +53,11 @@ const groupByGroup = (items: any): any => {
   }, {} as { [key: string]: any });
 }
 
-export const Controls = React.memo(() => {
+interface ControlsProps {
+  defaultClosedGroups?: string[]
+}
+
+export const Controls = React.memo((props?: ControlsProps) => {
   const [{ pos }, setPos] = useSpring(() => ({ pos: [0, 0] }));
   const bind = useDrag(({ movement, memo = ((pos as any).getValue ? (pos as any).getValue() : (pos as any).get()) }) => {
     setPos({
@@ -73,6 +77,12 @@ export const Controls = React.memo(() => {
     };
   }, []);
 
+  const getGroupConfig = (groupName: string): any => {
+    return {
+      defaultClosed: props?.defaultClosedGroups?.includes(groupName) ?? false
+    }
+  }
+
   return (
     <Float
       style={{
@@ -85,7 +95,7 @@ export const Controls = React.memo(() => {
       <Header {...bind()} />
       <Items>
         {Object.entries(groupByGroup(controls)).map(([groupName, items]: any) => (
-          <ControlGroup key={groupName} title={groupName} controls={items} />
+          <ControlGroup key={groupName} title={groupName} controls={items} config={getGroupConfig(groupName)} />
         ))}
       </Items>
     </Float>

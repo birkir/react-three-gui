@@ -39,8 +39,8 @@ const Container = styled.div<{ open: boolean, bg: boolean }>`
   margin-bottom: 8px;
 `;
 
-export const ControlGroup = ({ title, controls }: any) => {
-  const [open, setOpen] = useState(true);
+export const ControlGroup = ({ title, controls, config }: any) => {
+  const [open, setOpen] = useState(!config.defaultClosed ?? true);
   const isDefault = title !== 'DEFAULT_GROUP';
   return (
     <div>
