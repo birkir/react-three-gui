@@ -13,37 +13,39 @@ https://codesandbox.io/s/react-three-fiber-gui-62pvp
 Basic example
 
 ```tsx
-import { Controls, useControl } from 'react-three-gui';
+import { ControlsProvider, Controls, useControl } from 'react-three-gui';
 
 export const App = () => {
   const rotationX = useControl('Rotation X', { type: 'number' });
   return (
-     <>
-       <Canvas>
-         <mesh rotation-x={rotationX} />
-       </Canvas>
-       <Controls />
-     </>
-   );
+    <ControlsProvider>
+      <Canvas>
+        <mesh rotation-x={rotationX} />
+      </Canvas>
+      <Controls />
+    </ControlsProvider>
+  );
 };
 ```
 
 Use the spring option to return a react-spring value:
+
 ```tsx
 useControl('My ctrl', {
   type: 'number',
   spring: true,
-})
+});
 
 // or pass a react-spring configuration value
 
 useControl('My ctrl', {
   type: 'number',
   spring: { mass: 5, tension: 280, friction: 50 },
-})
+});
 ```
 
 Also possible to pass in your own state:
+
 ```tsx
 const [value, set] = useState(0);
 
@@ -54,11 +56,12 @@ useControl('Adjust value', {
 ```
 
 Also you can pass your own control component:
+
 ```tsx
-const MyControl = ({ control, value }) => (
+const MyControl = ({ value, setValue }) => (
   <input
     type="number"
-    onChange={e => control.set(e.currentTarget.value)}
+    onChange={e => setValue(e.currentTarget.value)}
     value={value}
   />
 );
@@ -71,13 +74,14 @@ useControl('Test', {
 ```
 
 ## API
+
 ```tsx
 import { useControl, Controls } from 'react-three-gui';
 
 // All the possible options
 useControl(name: string, {
   // General
-  type: 'number' | 'xypad' | 'boolean' | 'button' | 'color' | 'select' | 'string' | 'custom';
+  type: 'number' | 'xypad' | 'boolean' | 'button' | 'color' | 'select' | 'string' | 'file' | 'custom';
   value: any; // Initial value
   spring: boolean | SpringConfig; // Use spring
   group: string; // Group name
@@ -96,12 +100,19 @@ useControl(name: string, {
   // button
   onClick(): void;
 
+  // file
+  loader?: THREE.TextureLoader | THREE.FileLoader | etc;
+
   // custom
   component?: React.Component;
 });
 
-// Currently does not have any props
-<Controls />
+// Controls component
+<Controls
+  title="Custom title"
+  collapsed={true}
+  defaultClosedGroups={['Other', 'Stuff']}
+/>
 ```
 
 ## Supported controls
@@ -118,14 +129,17 @@ useControl(name: string, {
   - Returns `string` (as hex: #ffffff)
 - select
   - Returns `string`
+- file
+  - Returns `new THREE.FileLoader`
 - string
   - Returns `string`
 
 ### Future plans
 
 - [x] Support custom control components
-- [ ] Support passing refs and directly manipulate THREE objects
+- [x] File upload loader control
 - [x] Groups
 - [x] Draggable Widget
-- [ ] Collapsable widget
+- [x] Collapsable widget
+- [x] Persist state localstorage
 - [ ] Multi platform?

@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { BaseControl } from './BaseControl';
+import { BaseControl } from './base-control';
+import { ControlComponentProps, ControlOptionsSelect } from '../../types';
 
 const Select = styled.select`
   display: block;
@@ -25,11 +26,17 @@ const Select = styled.select`
   padding: 0 4px;
 `;
 
-export function SelectControl({ control, value }: any) {
+export function SelectControl({
+  name,
+  setValue,
+  value,
+  options,
+}: ControlComponentProps<ControlOptionsSelect>) {
+  const { items = [] } = options;
   return (
-    <BaseControl label={control.name}>
-      <Select value={value} onChange={e => control.set(e.currentTarget.value)}>
-        {control.config.items.map((item: string, i: number) => (
+    <BaseControl label={name}>
+      <Select value={value} onChange={e => setValue(e.currentTarget.value)}>
+        {items.map((item: string, i: number) => (
           <option key={i}>{item}</option>
         ))}
       </Select>

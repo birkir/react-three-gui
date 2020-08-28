@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { MouseEvent } from 'react';
 import styled from 'styled-components';
+import { ControlComponentProps, ControlOptionsButton } from '../../types';
 
 const Button = styled.button`
   display: block;
@@ -22,17 +23,20 @@ const Button = styled.button`
   padding: 0 4px;
 `;
 
-export function ButtonControl({ control }: any) {
+export function ButtonControl({
+  name,
+  options,
+}: ControlComponentProps<ControlOptionsButton>) {
   return (
     <div style={{ paddingTop: 8, paddingBottom: 8 }}>
       <Button
-        onClick={() => {
-          if (control.config.onClick) {
-            control.config.onClick();
+        onClick={(e: MouseEvent<HTMLButtonElement>) => {
+          if (options.onClick) {
+            options.onClick(e);
           }
         }}
       >
-        {control.name}
+        {name}
       </Button>
     </div>
   );
