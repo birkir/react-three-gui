@@ -1,19 +1,51 @@
-import { Dispatch, RefObject, SetStateAction } from 'react';
-import { SpringConfig } from 'react-spring/three';
+import { Dispatch, SetStateAction, MouseEvent } from 'react';
+import { SpringConfig } from '@react-spring/three';
 
-export type ControlId = RefObject<number>;
+export const DEFAULT_GROUP = 'DEFAULT_GROUP';
 
 export type ControlItem = {
-  id: ControlId;
+  id: string;
   name: string;
-  set: any;
   value: any;
-  config: ControlConfig;
-  addEventListener: any;
+  options: ControlOptions;
 };
 
-type ControlConfigNumber = {
-  type: 'number';
+export enum ControlType {
+  NUMBER = 'number',
+  STRING = 'string',
+  BUTTON = 'button',
+  BOOLEAN = 'boolean',
+  SELECT = 'select',
+  COLOR = 'color',
+  XYPAD = 'xypad',
+  FILE = 'file',
+  CUSTOM = 'custom',
+}
+
+export type ControlComponentProps<T> = ControlItem & {
+  setValue(value: any): void;
+  options: T;
+};
+
+export type ControlOptionsBase = {
+  /** Unique id for control */
+  id?: string;
+  /* The control type */
+  type: ControlType | string;
+  /** Default value */
+  value?: any;
+  /* Return useSpring instead of useState */
+  spring?: boolean | SpringConfig;
+  /* Group this control */
+  group?: string;
+  /* Use your own state */
+  state?: [any, Dispatch<SetStateAction<any>>];
+  /* onChange callback */
+  onChange?(value: any): void;
+};
+
+export type ControlOptionsNumber = {
+  type: ControlType.NUMBER | 'number';
   /* Minimum value */
   min?: number;
   /* Maximum value */
@@ -26,71 +58,72 @@ type ControlConfigNumber = {
   scrub?: boolean;
 };
 
-type ControlConfigString = {
-  type: 'string';
+export type ControlOptionsString = {
+  type: ControlType.STRING | 'string';
   /* Initial value */
   value?: string;
 };
 
-type ControlConfigButton = {
-  type: 'button';
-  /* Fired on button click */
-  onClick?(): void;
+export type ControlOptionsFile = {
+  type: ControlType.FILE | 'file';
+  /* Initial value */
+  value?: string;
+  /** Loader */
+  loader?: {
+    load(url: string): any;
+  };
 };
 
-type ControlConfigBoolean = {
-  type: 'boolean';
+export type ControlOptionsButton = {
+  type: ControlType.BUTTON | 'button';
+  /* Fired on button click */
+  onClick?(e: MouseEvent<HTMLButtonElement>): any;
+};
+
+export type ControlOptionsBoolean = {
+  type: ControlType.BOOLEAN | 'boolean';
   value?: boolean;
 };
 
-type ControlConfigSelect = {
-  type: 'select';
+export type ControlOptionsSelect = {
+  type: ControlType.SELECT | 'select';
   /* List of items to select from */
   items: string[];
   /* Initial value */
   value?: string;
 };
 
-type ControlConfigColor = {
-  type: 'color';
+export type ControlOptionsColor = {
+  type: ControlType.COLOR | 'color';
   /* Initial value as HEX code */
   value?: string;
 };
 
-type ControlConfigXYPad = {
-  type: 'xypad';
+export type ControlOptionsXYPad = {
+  type: ControlType.XYPAD | 'xypad';
   /* Initial value as { x, y } object */
   value?: { x: number; y: number };
   /* Pad drag distance */
   distance?: number;
+  /* Scrub value in both directions */
+  scrub?: boolean;
 };
 
-type ControlConfigCustom = {
-  type: 'custom';
+export type ControlOptionsCustom = {
+  type: ControlType.CUSTOM | 'custom';
   /* Custom React component */
   component?: any;
 };
 
-type ControlConfigBase = {
-  value?: any;
-  /* Return useSpring instead of useState */
-  spring?: boolean | SpringConfig;
-  /* Group this control */
-  group?: string;
-  /* Use your own state */
-  state?: [any, Dispatch<SetStateAction<any>>];
-  /* onChange callback */
-  onChange?(value: any): void;
-};
-
-export type ControlConfig = ControlConfigBase &
+export type ControlOptions = ControlOptionsBase &
   (
-    | ControlConfigCustom
-    | ControlConfigNumber
-    | ControlConfigBoolean
-    | ControlConfigString
-    | ControlConfigButton
-    | ControlConfigColor
-    | ControlConfigSelect
-    | ControlConfigXYPad
+    | ControlOptionsCustom
+    | ControlOptionsNumber
+    | ControlOptionsBoolean
+    | ControlOptionsString
+    | ControlOptionsButton
+    | ControlOptionsColor
+    | ControlOptionsSelect
+    | ControlOptionsFile
+    | ControlOptionsXYPad
   );

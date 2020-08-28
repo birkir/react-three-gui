@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { ControlItem } from './ControlItem';
+import { ControlItem } from './control-item';
 
 const Heading = styled.h2<{ open: boolean }>`
   display: block;
@@ -39,8 +39,8 @@ const Container = styled.div<{ open: boolean; bg: boolean }>`
   margin-bottom: 8px;
 `;
 
-export const ControlGroup = ({ title, controls, config }: any) => {
-  const [open, setOpen] = useState(!config.defaultClosed ?? true);
+export const ControlGroup = ({ title, controls, options = {} }: any) => {
+  const [open, setOpen] = useState(!options.defaultClosed ?? true);
   const isDefault = title !== 'DEFAULT_GROUP';
   return (
     <div>
@@ -50,8 +50,8 @@ export const ControlGroup = ({ title, controls, config }: any) => {
         </Heading>
       )}
       <Container open={open} bg={isDefault}>
-        {Array.from(controls).map(([id, control]: any) => (
-          <ControlItem key={id.current} control={control} />
+        {Array.from(controls).map((control: any) => (
+          <ControlItem key={`${control.id}_${control.name}`} {...control} />
         ))}
       </Container>
     </div>

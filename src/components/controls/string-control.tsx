@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { BaseControl } from './BaseControl';
+import { BaseControl } from './base-control';
+import { ControlComponentProps, ControlOptionsString } from '../../types';
 
 const Input = styled.input`
   display: block;
@@ -25,10 +26,12 @@ const Input = styled.input`
   padding: 0 4px;
 `;
 
-export const StringControl = React.memo(({ control, value }: any) => {
-  return (
-    <BaseControl label={control.name}>
-      <Input value={value} onChange={e => control.set(e.target.value)} />
-    </BaseControl>
-  );
-});
+export const StringControl = React.memo(
+  ({ name, setValue, value }: ControlComponentProps<ControlOptionsString>) => {
+    return (
+      <BaseControl label={name}>
+        <Input value={value} onChange={e => setValue(e.target.value)} />
+      </BaseControl>
+    );
+  }
+);

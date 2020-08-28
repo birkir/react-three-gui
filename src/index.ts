@@ -1,5 +1,5 @@
-import { ControlId, ControlItem } from './types';
-export { Controls } from './Controls';
-export { useControl } from './hooks/useControl';
-export const controlsEmitter = { update: () => null };
-export const controls = new Map<ControlId, ControlItem>();
+export { Controls } from './components/controls';
+export { ControlsProvider } from './components/controls-provider';
+export { useControl } from './hooks/use-control';
+export { BaseControl } from './components/controls/base-control';
+export * from './types';

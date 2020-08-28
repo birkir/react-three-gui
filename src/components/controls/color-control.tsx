@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ChromePicker } from 'react-color';
 import styled from 'styled-components';
-import { BaseControl } from './BaseControl';
+import { BaseControl } from './base-control';
+import { ControlComponentProps, ControlOptionsColor } from '../../types';
 
 const ColorPicker = styled.div`
   position: relative;
@@ -22,7 +23,11 @@ const Picker = styled.div<{ hidden: boolean }>`
   z-index: 100;
 `;
 
-export function ColorControl({ control, value }: any) {
+export function ColorControl({
+  name,
+  value,
+  setValue,
+}: ControlComponentProps<ControlOptionsColor>) {
   const [open, setOpen] = useState(false);
   const pickerRef = useRef<HTMLDivElement>();
   const handleClick = (e: any) => {
@@ -39,7 +44,7 @@ export function ColorControl({ control, value }: any) {
   }, []);
 
   return (
-    <BaseControl label={control.name} flexLabel>
+    <BaseControl label={name} flexLabel>
       <ColorPicker>
         <ColorBox
           style={{ backgroundColor: value }}
@@ -48,7 +53,7 @@ export function ColorControl({ control, value }: any) {
         <Picker hidden={open !== true} ref={pickerRef as any}>
           <ChromePicker
             color={value}
-            onChange={color => control.set(color.hex)}
+            onChange={color => setValue(color.hex)}
             disableAlpha
           />
         </Picker>

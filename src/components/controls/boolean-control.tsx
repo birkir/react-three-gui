@@ -1,6 +1,7 @@
-import React from 'react';
-import styled from 'styled-components';
-import { BaseControl } from './BaseControl';
+import React from "react";
+import styled from "styled-components";
+import { BaseControl } from "./base-control";
+import { ControlComponentProps, ControlOptionsBoolean } from "../../types";
 
 const FakeCheckbox = styled.label`
   height: 16px;
@@ -18,7 +19,7 @@ const Checkbox = styled.input`
   margin-right: -15px;
   & + ${FakeCheckbox}:after {
     position: absolute;
-    content: '';
+    content: "";
     display: inline-block;
     height: 4px;
     width: 8px;
@@ -41,15 +42,20 @@ const Checkbox = styled.input`
   }
 `;
 
-export function BooleanControl({ control, value }: any) {
-  const htmlFor = `Control${control.id.current}`;
+export function BooleanControl({
+  id,
+  name,
+  value,
+  setValue
+}: ControlComponentProps<ControlOptionsBoolean>) {
+  const htmlFor = `Control${id}`;
   return (
-    <BaseControl flexLabel label={control.name} htmlFor={htmlFor}>
+    <BaseControl flexLabel label={name} htmlFor={htmlFor}>
       <Checkbox
         id={htmlFor}
         type="checkbox"
         checked={value}
-        onChange={e => control.set(e.currentTarget.checked)}
+        onChange={(e) => setValue(e.currentTarget.checked)}
       />
       <FakeCheckbox htmlFor={htmlFor} />
     </BaseControl>

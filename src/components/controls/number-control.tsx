@@ -1,7 +1,8 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { clamp, map } from '../utils';
-import { BaseControl } from './BaseControl';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { clamp, map } from '../../utils';
+import { BaseControl } from './base-control';
+import { ControlComponentProps, ControlOptionsNumber } from '../../types';
 
 const InputRange = styled.input`
   -webkit-appearance: none;
@@ -41,29 +42,31 @@ const InputRange = styled.input`
 const PRECISION = 300;
 const CENTER = PRECISION / 2;
 
-export function NumberControl({ control, value }: any) {
+export const NumberControl = ({
+  name,
+  value,
+  setValue,
+  options,
+}: ControlComponentProps<ControlOptionsNumber>) => {
   const ref = useRef<HTMLInputElement | null>(null);
   const stage = useRef(null);
-  const { config } = control;
   const {
-    min = config.scrub ? -Infinity : 0,
-    max = config.scrub ? Infinity : Math.PI,
-  } = config;
+    min = options.scrub ? -Infinity : 0,
+    max = options.scrub ? Infinity : Math.PI,
+  } = options;
 
-  let distance = config.distance;
-  if (!distance) {
-    distance = config.scrub ? 2 : max - min;
-  }
+  const distance = options.distance ?? options.scrub ? 2 : max - min;
+
   const [val, setVal] = useState(
-    config.scrub ? CENTER : map(value, min, max, 0, PRECISION)
+    options.scrub ? CENTER : map(value, min, max, 0, PRECISION)
   );
 
   const handleChange = useCallback(() => {
-    if (config.scrub) {
+    if (options.scrub) {
       setVal(CENTER);
       stage.current = null;
     }
-  }, [config.scrub]);
+  }, [options.scrub]);
 
   useEffect(() => {
     const el = ref.current;
@@ -78,7 +81,7 @@ export function NumberControl({ control, value }: any) {
   }, [handleChange, ref]);
 
   return (
-    <BaseControl label={control.name} value={value.toFixed(2)}>
+    <BaseControl label={name} value={(value || 0).toFixed(2)}>
       <InputRange
         ref={ref}
         type="range"
@@ -86,23 +89,23 @@ export function NumberControl({ control, value }: any) {
         min={0}
         max={PRECISION}
         onChange={e => {
-          const num = Number(e.currentTarget.value);
+          const num = Number(e.target.value);
           setVal(num);
           if (stage.current === null) {
             stage.current = value;
           }
           const cvalue =
-            (config.scrub ? (stage as any).current : 0) +
+            (options.scrub ? (stage as any).current : 0) +
             map(
-              num - (config.scrub ? CENTER : 0),
+              num - (options.scrub ? CENTER : 0),
               0,
               PRECISION,
-              config.scrub ? 0 : min,
-              config.scrub ? distance * 2 : max
+              options.scrub ? 0 : min,
+              options.scrub ? distance * 2 : max
             );
-          control.set(clamp(cvalue, min, max));
+          setValue(clamp(cvalue, min, max));
         }}
       />
     </BaseControl>
   );
-}
+};
