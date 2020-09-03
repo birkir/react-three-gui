@@ -109,9 +109,12 @@ useControl(name: string, {
 
 // Controls component
 <Controls
-  title="Custom title"
+  title="react-three-gui"
   collapsed={true}
   defaultClosedGroups={['Other', 'Stuff']}
+  width={300} // default 300
+  anchor={'top_left' | 'bottom_left' | 'top_right' | 'bottom_right'} // see ControlsAnchor enum
+  style={{ ... }} // pass any kind of styles here. Supports @react-spring/web styles.
 />
 ```
 
