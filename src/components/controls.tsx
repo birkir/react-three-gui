@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { animated, useSpring, to } from '@react-spring/web';
 import { useDrag } from 'react-use-gesture';
+import useMeasure from 'react-use-measure';
 import { clamp } from '../utils';
 import { DEFAULT_GROUP } from '../types';
 import { ControlsContext } from '../contexts/controls-context';
@@ -10,15 +11,68 @@ import { ControlGroup } from './control-group';
 
 const mq = `@media only screen and (max-width: 600px)`;
 
-const WIDTH = 300;
+interface FloatProps {
+  'data-width': number;
+  'data-anchor': ControlsAnchor | string;
+}
 
-const Float = styled(animated.div)`
+export enum ControlsAnchor {
+  TOP_LEFT = 'top_left',
+  TOP_RIGHT = 'top_right',
+  BOTTOM_LEFT = 'bottom_left',
+  BOTTOM_RIGHT = 'bottom_right',
+}
+
+export interface ControlsProps {
+  /**
+   * Title to show on the controls
+   */
+  title?: string;
+  /**
+   * Collapsed by default
+   */
+  collapsed?: boolean;
+  /**
+   * Array of group names as strings
+   */
+  defaultClosedGroups?: string[];
+  /**
+   * Defaults to 300
+   */
+  width?: number;
+  /**
+   * Anchor point
+   */
+  anchor?:
+    | ControlsAnchor
+    | 'top_left'
+    | 'bottom_left'
+    | 'top_right'
+    | 'bottom_right';
+  /**
+   * Styles
+   */
+  style?: any;
+}
+
+function posProps(positions: ControlsAnchor[]) {
+  return function posPropsFn(props: any) {
+    return positions.includes(props['data-anchor']) ? '16px' : 'auto';
+  };
+}
+
+const Float = styled(animated.div)<FloatProps>`
   display: flex;
   flex-direction: column;
   position: fixed;
-  top: 16px;
-  right: 16px;
-  width: ${WIDTH}px;
+  top: ${posProps([ControlsAnchor.TOP_LEFT, ControlsAnchor.TOP_RIGHT])};
+  right: ${posProps([ControlsAnchor.BOTTOM_RIGHT, ControlsAnchor.TOP_RIGHT])};
+  bottom: ${posProps([
+    ControlsAnchor.BOTTOM_RIGHT,
+    ControlsAnchor.BOTTOM_LEFT,
+  ])};
+  left: ${posProps([ControlsAnchor.TOP_LEFT, ControlsAnchor.BOTTOM_LEFT])};
+  width: ${props => props['data-width']}px;
   border-radius: 16px;
   background-color: #fff;
   border-radius: 8px;
@@ -38,6 +92,7 @@ const Float = styled(animated.div)`
 const Header = styled(animated.div)<{ 'data-collapsed': boolean }>`
   display: flex;
   align-items: center;
+  position: relative;
   padding-left: 16px;
   padding-right: 16px;
   height: 42px;
@@ -76,9 +131,20 @@ const CollapseIcon = styled.div<{ collapsed: boolean }>`
     width: 16px;
     background-color: white;
   }
+  ${mq} {
+    &:before {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+    }
+  }
 `;
 
-const Items = styled.div`
+const Items = styled(animated.div)`
   padding-bottom: 8px;
   overflow-y: auto;
   max-height: calc(100vh - 42px);
@@ -93,20 +159,36 @@ const groupByGroup = (items: any): any => {
   }, {} as { [key: string]: any });
 };
 
-export interface ControlsProps {
-  title?: string;
-  collapsed?: boolean;
-  defaultClosedGroups?: string[];
-}
-
 export const Controls = (props: ControlsProps) => {
-  const { title = 'react-three-gui', defaultClosedGroups = [] } = props;
+  const {
+    title = 'react-three-gui',
+    defaultClosedGroups = [],
+    width = 300,
+    style = {},
+    anchor = ControlsAnchor.TOP_RIGHT,
+  } = props;
   const { controls } = useContext(ControlsContext);
   const [collapsed, setCollapsed] = useLocalStorage(
     'REACT_THREE_GUI__COLLAPSED',
     props.collapsed
   );
-  const [{ pos }, setPos] = useSpring(() => ({ pos: [0, 0] }));
+  const [position, setPosition] = useLocalStorage(
+    `REACT_THREE_GUI__${anchor}`,
+    [0, 0]
+  );
+  const [ref, bounds] = useMeasure();
+  const [{ pos }, setPos] = useSpring(() => ({
+    pos: position,
+    onRest({ value }) {
+      setPosition(value);
+    },
+  }));
+  const left = [ControlsAnchor.TOP_LEFT, ControlsAnchor.BOTTOM_LEFT].includes(
+    anchor as any
+  );
+  const top = [ControlsAnchor.TOP_RIGHT, ControlsAnchor.TOP_LEFT].includes(
+    anchor as any
+  );
   const bind = useDrag(
     ({
       movement,
@@ -116,10 +198,15 @@ export const Controls = (props: ControlsProps) => {
           : (pos as any).get()
         : 0,
     }) => {
+      const [x, y] = [movement[0] + memo[0], movement[1] + memo[1]];
       setPos({
         pos: [
-          clamp(movement[0] + memo[0], -window.innerWidth + WIDTH + 32, 1),
-          clamp(movement[1] + memo[1], 0, window.innerHeight - 350),
+          left
+            ? clamp(x, 1, window.innerWidth - width - 32)
+            : clamp(x, -window.innerWidth + width + 32, 1),
+          top
+            ? clamp(y, 1, window.innerHeight)
+            : clamp(y, -window.innerHeight + bounds.height + 32, 1),
         ],
       });
       return memo;
@@ -136,11 +223,16 @@ export const Controls = (props: ControlsProps) => {
 
   return (
     <Float
-      style={
-        pos?.get && {
-          transform: to([pos], ([x, y]) => `translate3d(${x}px,${y}px,0)`),
-        }
-      }
+      data-width={width}
+      data-anchor={anchor}
+      ref={ref}
+      style={{
+        ...style,
+        transform: to(
+          [pos] as any,
+          ([x, y]) => `translate3d(${x}px,${y}px,0)` as any
+        ),
+      }}
     >
       <Header data-collapsed={collapsed} {...bind()}>
         {title}
@@ -149,7 +241,14 @@ export const Controls = (props: ControlsProps) => {
           onClick={() => setCollapsed((c: boolean) => !c)}
         />
       </Header>
-      <Items hidden={!collapsed}>
+      <Items
+        hidden={!collapsed}
+        style={{
+          maxHeight: top
+            ? to([pos] as any, ([_, y]) => `calc(100vh - ${y + 92}px)` as any)
+            : undefined,
+        }}
+      >
         {Object.entries(groups).map(([groupName, items]: any) => (
           <ControlGroup
             key={groupName}

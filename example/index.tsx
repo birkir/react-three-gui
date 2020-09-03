@@ -4,44 +4,10 @@ import * as ReactDOM from 'react-dom';
 import { animated } from 'react-spring';
 import { a } from '@react-spring/three';
 import { Canvas, useLoader } from 'react-three-fiber';
+import { Text } from 'drei';
 import * as THREE from 'three';
 import { Controls, ControlsProvider, useControl, BaseControl } from '../src';
-import fontFile from './resources/unknown';
 import { useEffect } from 'react';
-
-function Text({ children, size = 1, letterSpacing = 0.01, color = '#000000' }) {
-  const [font] = React.useState(() => new THREE.FontLoader().parse(fontFile));
-  const [shapes, [x, y]] = React.useMemo(() => {
-    let x = 0,
-      y = 0;
-    let letters = [...children];
-    let mat = new THREE.MeshBasicMaterial({
-      color,
-      opacity: 1,
-      transparent: true,
-    });
-    return [
-      letters.map(letter => {
-        const geom = new THREE.ShapeGeometry(font.generateShapes(letter, size));
-        geom.computeBoundingBox();
-        const mesh = new THREE.Mesh(geom, mat);
-        mesh.position.x = x;
-        x += geom.boundingBox?.max?.x! + letterSpacing;
-        y = Math.max(y, geom.boundingBox?.max?.y!);
-        return mesh;
-      }),
-      [x, y],
-    ];
-  }, [children]);
-
-  return (
-    <group position={[-x / 2, -y / 2, 0]}>
-      {shapes.map((shape, index) => (
-        <primitive key={index} object={shape} />
-      ))}
-    </group>
-  );
-}
 
 const Next = () => {
   const rotationX = useControl('Mega', {
@@ -91,7 +57,7 @@ const Box = () => {
     group: 'More',
     type: 'xypad',
     value: { x: 0, y: 0 },
-    distance: Math.PI,
+    distance: 2,
   });
   const dropdown = useControl('Pick one', {
     group: 'More',
@@ -135,7 +101,13 @@ const Box = () => {
         <boxGeometry attach="geometry" args={[1, 1, 1]} />
         <a.meshPhongMaterial attach="material" map={texture} color={color} />
       </a.mesh>
-      <Text>{str}</Text>
+      <Text
+        fontSize={1.6}
+        color="black"
+        font="https://fonts.gstatic.com/s/raleway/v14/1Ptrg8zYS_SKggPNwK4vaqI.woff"
+      >
+        {str}
+      </Text>
       {dropdown === 'bar' && <Next />}
     </>
   );

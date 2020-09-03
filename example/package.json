@@ -8,6 +8,7 @@
     "build": "parcel build index.html"
   },
   "dependencies": {
+    "drei": "^1.3.2",
     "react": ">= 16.8.0",
     "react-app-polyfill": "^1.0.6",
     "react-dom": ">= 16.8.0",
