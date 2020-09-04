@@ -1,6 +1,5 @@
 import * as React from 'react';
 import 'react-app-polyfill/ie11';
-import * as ReactDOM from 'react-dom';
 import { animated } from 'react-spring';
 import { a } from '@react-spring/three';
 import { Canvas, useLoader } from 'react-three-fiber';
@@ -133,7 +132,7 @@ const Hello = () => {
   );
 };
 
-const App = () => {
+export const Three = () => {
   return (
     <ControlsProvider>
       <Canvas style={{ width: 800, height: 600 }}>
@@ -148,5 +147,3 @@ const App = () => {
     </ControlsProvider>
   );
 };
-
-ReactDOM.render(<App />, document.getElementById('root'));

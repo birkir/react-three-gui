@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
-import { useSpring } from '@react-spring/three';
+import { useSpring } from '@react-spring/core';
 import { ControlsContext } from '../contexts/controls-context';
 import { ControlOptions, ControlItem } from '../types';
 import { defaultOptions, defaultValue } from '../utils';
