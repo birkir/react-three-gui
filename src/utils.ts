@@ -1,5 +1,5 @@
 import { ControlOptions, ControlType } from './types';
-import * as THREE from 'three';
+// import * as THREE from 'three';
 
 export const defaultOptions: ControlOptions = {
   type: ControlType.NUMBER,
@@ -22,8 +22,9 @@ export const defaultValue = (options: ControlOptions) => {
       return (options.items || [''])[0];
     case ControlType.BOOLEAN:
       return false;
-    case ControlType.FILE:
-      return new THREE.FileLoader();
+    // NOTE: maybe have a static default loader that can be configured (expo/three/etc are different)
+    // case ControlType.FILE:
+    //   return new THREE.FileLoader();
     case ControlType.XYPAD:
       return { x: 0, y: 0 };
   }

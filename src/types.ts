@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, MouseEvent } from 'react';
-import { SpringConfig } from '@react-spring/three';
+import { SpringConfig } from '@react-spring/core';
 
 export const DEFAULT_GROUP = 'DEFAULT_GROUP';
 

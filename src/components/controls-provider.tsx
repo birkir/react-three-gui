@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { ControlsContext } from '../contexts/controls-context';
-import { Canvas } from 'react-three-fiber';
+// import { Canvas } from 'react-three-fiber';
 import { ControlItem } from 'types';
 import { isMemo } from 'react-is';
 
@@ -14,7 +14,7 @@ const mapCanvasNode = (
     }
 
     const isCanvas =
-      item.type === Canvas ||
+      // item.type === Canvas ||
       (isMemo(item) && (item.type as any)?.type?.name === 'Canvas');
 
     const childs = isCanvas ? (
@@ -22,8 +22,8 @@ const mapCanvasNode = (
         {item.props.children}
       </ControlsContext.Provider>
     ) : (
-      mapCanvasNode(item.props.children, value)
-    );
+        mapCanvasNode(item.props.children, value)
+      );
 
     return React.cloneElement(item, {
       ...item.props,
