@@ -3,10 +3,10 @@ import 'react-app-polyfill/ie11';
 import * as ReactDOM from 'react-dom';
 import { animated } from 'react-spring';
 import { a } from '@react-spring/three';
-import { Canvas, useLoader } from 'react-three-fiber';
+import { Canvas } from 'react-three-fiber';
 import { Text } from 'drei';
 import * as THREE from 'three';
-import { Controls, ControlsProvider, useControl, BaseControl } from '../src';
+import { Controls, useControl, withControls } from '../src';
 import { useEffect } from 'react';
 
 const Next = () => {
@@ -18,7 +18,7 @@ const Next = () => {
   return (
     <a.mesh position={[1.5, 0, 0]} rotation-x={rotationX}>
       <boxGeometry attach="geometry" args={[1, 1, 1]} />
-      <meshStandardMaterial attach="material" />
+      <meshStandardMaterial attach="material" color="orange" />
     </a.mesh>
   );
 };
@@ -133,19 +133,39 @@ const Hello = () => {
   );
 };
 
+const Sample2 = () => {
+  const CtrlCanvas = withControls(Canvas);
+  return (
+    <CtrlCanvas style={{ width: 400, height: 400 }}>
+      <ambientLight intensity={1} />
+      <pointLight position={[0, 2, 2]} />
+      <Next />
+    </CtrlCanvas>
+  );
+};
+
+const Sample1 = () => {
+  return (
+    <Controls.Canvas style={{ width: 400, height: 400 }}>
+      <ambientLight intensity={1} />
+      <pointLight position={[0, 2, 2]} />
+      <React.Suspense fallback={null}>
+        <Box />
+      </React.Suspense>
+    </Controls.Canvas>
+  );
+};
+
 const App = () => {
   return (
-    <ControlsProvider>
-      <Canvas style={{ width: 800, height: 600 }}>
-        <ambientLight intensity={1} />
-        <pointLight position={[0, 2, 2]} />
-        <React.Suspense fallback={null}>
-          <Box />
-        </React.Suspense>
-      </Canvas>
+    <Controls.Provider>
+      <div style={{ display: 'flex', flexDirection: 'row' }}>
+        <Sample1 />
+        <Sample2 />
+      </div>
       <Hello />
       <Controls />
-    </ControlsProvider>
+    </Controls.Provider>
   );
 };
 

@@ -1,36 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { ControlsContext } from '../contexts/controls-context';
-import { Canvas } from 'react-three-fiber';
+import { Canvas as R3FCanvas } from 'react-three-fiber';
 import { ControlItem } from 'types';
-import { isMemo } from 'react-is';
-
-const mapCanvasNode = (
-  children: React.ReactElement,
-  value: any
-): React.ReactElement[] => {
-  return React.Children.map(children, item => {
-    if (!item || !item.props) {
-      return null;
-    }
-
-    const isCanvas =
-      item.type === Canvas ||
-      (isMemo(item) && (item.type as any)?.type?.name === 'Canvas');
-
-    const childs = isCanvas ? (
-      <ControlsContext.Provider value={value}>
-        {item.props.children}
-      </ControlsContext.Provider>
-    ) : (
-      mapCanvasNode(item.props.children, value)
-    );
-
-    return React.cloneElement(item, {
-      ...item.props,
-      children: childs,
-    });
-  });
-};
 
 export const ControlsProvider = ({
   children,
@@ -63,11 +34,25 @@ export const ControlsProvider = ({
     },
   };
 
-  const childs = mapCanvasNode(children as React.ReactElement, context);
-
   return (
     <ControlsContext.Provider value={context}>
-      {childs}
+      {children}
     </ControlsContext.Provider>
   );
 };
+
+export function withControls(CanvasEl: typeof R3FCanvas) {
+  return ({ children, ...props }: any) => (
+    <ControlsContext.Consumer>
+      {value => (
+        <CanvasEl {...props}>
+          <ControlsContext.Provider value={value}>
+            {children}
+          </ControlsContext.Provider>
+        </CanvasEl>
+      )}
+    </ControlsContext.Consumer>
+  );
+}
+
+export const Canvas = withControls(R3FCanvas);

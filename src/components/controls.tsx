@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { ControlsProvider, Canvas } from './controls-provider';
 import styled from 'styled-components';
 import { animated, useSpring, to } from '@react-spring/web';
 import { useDrag } from 'react-use-gesture';
@@ -159,7 +160,13 @@ const groupByGroup = (items: any): any => {
   }, {} as { [key: string]: any });
 };
 
-export const Controls = (props: ControlsProps) => {
+interface ControlsFn {
+  (props: ControlsProps): JSX.Element;
+  Provider: typeof ControlsProvider;
+  Canvas: typeof Canvas;
+}
+
+export const Controls: ControlsFn = (props: ControlsProps) => {
   const {
     title = 'react-three-gui',
     defaultClosedGroups = [],
@@ -261,3 +268,6 @@ export const Controls = (props: ControlsProps) => {
     </Float>
   );
 };
+
+Controls.Provider = ControlsProvider;
+Controls.Canvas = Canvas;

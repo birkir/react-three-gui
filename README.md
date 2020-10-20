@@ -13,17 +13,17 @@ https://codesandbox.io/s/react-three-fiber-gui-62pvp
 Basic example
 
 ```tsx
-import { ControlsProvider, Controls, useControl } from 'react-three-gui';
+import { Controls, useControl } from 'react-three-gui';
 
 export const App = () => {
   const rotationX = useControl('Rotation X', { type: 'number' });
   return (
-    <ControlsProvider>
-      <Canvas>
+    <Controls.Provider>
+      <Controls.Canvas>
         <mesh rotation-x={rotationX} />
-      </Canvas>
+      </Controls.Canvas>
       <Controls />
-    </ControlsProvider>
+    </Controls.Provider>
   );
 };
 ```
@@ -71,6 +71,32 @@ useControl('Test', {
   value: 2,
   component: MyControl,
 });
+```
+
+## Use your own Canvas
+
+```tsx
+import { Canvas } from 'react-three-fiber';
+import { withControls } from 'react-three-gui';
+
+// Wrap the <Canvas> with `withControls`
+const YourCanvas = withControls(Canvas);
+
+const Scene = () => (
+  <YourCanvas>
+    <mesh rotation-x={rotationX} />
+  </YourCanvas>
+);
+
+const App = () => {
+  const rotationX = useControl('Rotation X', { type: 'number' });
+  return (
+    <Controls.Provider>
+      <Scene />
+      <Controls />
+    </Controls.Provider>
+  );
+};
 ```
 
 ## API

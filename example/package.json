@@ -13,8 +13,6 @@
     "react-app-polyfill": "^1.0.6",
     "react-dom": ">= 16.8.0",
     "react-spring": "^8.0.27",
-    "react-three-fiber": "^4.2.20",
-    "three": "^0.120.0",
     "trim-right": "^1.0.1"
   },
   "alias": {
