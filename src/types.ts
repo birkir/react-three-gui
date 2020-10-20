@@ -97,6 +97,26 @@ export type ControlOptionsColor = {
   type: ControlType.COLOR | 'color';
   /* Initial value as HEX code */
   value?: string;
+  /* Show picker as inline */
+  inline?: boolean;
+  /* What kind of picker. Default Chrome */
+  picker?:
+    | 'chrome'
+    | 'sketch'
+    | 'hue'
+    | 'alpha'
+    | 'block'
+    | 'github'
+    | 'twitter'
+    | 'circle'
+    | 'material'
+    | 'compact'
+    | 'slider'
+    | 'swatches';
+  /* Disable alpha */
+  disableAlpha?: boolean;
+  /* Custom set of colors */
+  colors?: string[];
 };
 
 export type ControlOptionsXYPad = {

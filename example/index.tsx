@@ -52,7 +52,9 @@ const Box = () => {
   const color = useControl('Material color', {
     type: 'color',
     group: 'Basic',
+    picker: 'sketch',
   });
+
   const position = useControl('Position', {
     group: 'More',
     type: 'xypad',
