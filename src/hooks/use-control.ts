@@ -24,7 +24,11 @@ export const useControl = (
 
   useEffect(() => {
     if (context.state.current && id) {
-      context.state.current.set(id, setValue);
+      if (options.spring) {
+        context.state.current.set(id, setSpringValue);
+      } else {
+        context.state.current.set(id, setValue);
+      }
     }
   }, [context.state, id]);
 
