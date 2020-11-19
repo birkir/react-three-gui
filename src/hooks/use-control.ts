@@ -16,6 +16,7 @@ export const useControl = (
     value,
     config: typeof options.spring === 'object' ? options.spring : undefined,
   }));
+  const setSpringValue = (springValue) => setSpring({ value: springValue });
 
   if (options.state) {
     value = options.state[0];
