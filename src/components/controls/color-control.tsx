@@ -50,7 +50,11 @@ export function ColorControl({
   const [open, setOpen] = useState(false);
   const pickerRef = useRef<HTMLDivElement>();
   const handleClick = (e: any) => {
-    if (pickerRef.current && !pickerRef.current.contains(e.target)) {
+    if (
+      e.target.id !== 'color-picker'
+      && pickerRef.current
+      && !pickerRef.current.contains(e.target)
+    ) {
       setOpen(false);
     }
   };
@@ -64,7 +68,7 @@ export function ColorControl({
 
   const pickerProps: any = {
     color: value,
-    onChange: (color: any) => setValue(color.rgb),
+    onChange: (color: any) => setValue(color.hex),
     disableAlpha: options.disableAlpha,
     colors: options.colors,
   };
@@ -120,6 +124,7 @@ export function ColorControl({
         ) : (
           <>
             <ColorBox
+              id="color-picker"
               style={{ backgroundColor: value }}
               onClick={() => setOpen(lastValue => !lastValue)}
             />
