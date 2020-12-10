@@ -15,12 +15,17 @@ Basic example
 ```tsx
 import { Controls, useControl } from 'react-three-gui';
 
-export const App = () => {
+const MyMesh = () => {
   const rotationX = useControl('Rotation X', { type: 'number' });
+  return <mesh rotation-x={rotationX} />;
+}
+
+
+export const App = () => {
   return (
     <Controls.Provider>
       <Controls.Canvas>
-        <mesh rotation-x={rotationX} />
+        <MyMesh />
       </Controls.Canvas>
       <Controls />
     </Controls.Provider>
@@ -89,7 +94,6 @@ const Scene = () => (
 );
 
 const App = () => {
-  const rotationX = useControl('Rotation X', { type: 'number' });
   return (
     <Controls.Provider>
       <Scene />
