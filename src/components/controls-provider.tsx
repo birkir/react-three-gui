@@ -22,9 +22,8 @@ export const ControlsProvider = ({
     state,
     controls,
     addControl: (control: ControlItem) => {
-      control.id = String(Math.random());
+      control.id = control.id ?? String(Math.random());
       setControls(ctrls => {
-        // control.id = control.id ?? String(ctrls.length);
         return [...ctrls, control];
       });
       return control;
