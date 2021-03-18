@@ -80,6 +80,10 @@ export const NumberControl = ({
     };
   }, [handleChange, ref]);
 
+  useEffect(() => {
+    setVal(options.scrub ? CENTER : map(value, min, max, 0, PRECISION));
+  }, [value])
+
   return (
     <BaseControl label={name} value={(value || 0).toFixed(2)}>
       <InputRange

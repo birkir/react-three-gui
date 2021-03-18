@@ -16,7 +16,7 @@ export const useControl = (
     value,
     config: typeof options.spring === 'object' ? options.spring : undefined,
   }));
-  const setSpringValue = (springValue) => setSpring({ value: springValue });
+  const setSpringValue = (springValue: any) => setSpring({ value: springValue });
 
   if (options.state) {
     value = options.state[0];
@@ -49,6 +49,10 @@ export const useControl = (
   useEffect(() => {
     options.spring && void setSpring({ value });
     options.onChange && void options.onChange(value);
+
+    // prevent stale gui
+    id && context.gui.current?.get(id)?.(value)
+
   }, [options, setSpring, value]);
 
   if (options.spring) {
