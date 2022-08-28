@@ -16,8 +16,8 @@
     "lint": "tsdx lint"
   },
   "peerDependencies": {
+    "@react-three/fiber": "*",
     "react": ">=16",
-    "react-three-fiber": "*",
     "three": "*"
   },
   "prettier": {
@@ -27,6 +27,7 @@
     "trailingComma": "es5"
   },
   "devDependencies": {
+    "@react-three/fiber": "^4.2.20",
     "@types/jest": "^26.0.10",
     "@types/react": "^16.9.48",
     "@types/react-color": "^3.0.1",
@@ -37,7 +38,6 @@
     "husky": "^4.2.5",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
-    "react-three-fiber": "^4.2.20",
     "three": "^0.120.0",
     "tsdx": "^0.13.3",
     "tslib": "^2.0.1",
