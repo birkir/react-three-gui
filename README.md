@@ -2,6 +2,14 @@
 
 A graphical user interface for changing variable states in React.
 
+## Using this repo
+To use this repo, run the following commands inside the repo directory: \
+`yarn install` \
+`yarn build` \
+`yarn pack` \
+This will generate a tarball `.tgz` that you can copy to your project directory. \
+Then you can run: `yarn add ./react-three-gui.tgz` which will install it.
+
 ## Examples
 
 https://codesandbox.io/s/react-three-fiber-gui-62pvp
