@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { ControlsContext } from '../contexts/controls-context';
-import { Canvas as R3FCanvas } from 'react-three-fiber';
+import { Canvas as R3FCanvas } from '@react-three/fiber';
 import { ControlItem } from 'types';
 
 export const ControlsProvider = ({
